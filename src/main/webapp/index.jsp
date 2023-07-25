@@ -17,5 +17,6 @@
 <%--<jsp:include page="layout/header.jsp"></jsp:include>--%>
 <jsp:include page="chi-tiet-sp/home"></jsp:include>
 <%--<jsp:include page="views/login/login.jsp"></jsp:include>--%>
+
 </body>
 </html>

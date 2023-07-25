@@ -29,9 +29,9 @@ public class LoginGoogleServlet extends HttpServlet {
             String accessToken = common.GoogleUtils.getToken(code);
             GooglePojo googlePojo = GoogleUtils.getUserInfo(accessToken);
             request.setAttribute("id", googlePojo.getId());
-            request.setAttribute("name", googlePojo.getName());
+            request.setAttribute("googlePojo", googlePojo);
             request.setAttribute("email", googlePojo.getEmail());
-//            request.getRequestDispatcher("/views/home/index.jsp")
+//            request.getRequestDispatcher("/index.jsp")
 //                    .forward(request, response);
             response.sendRedirect("/StoreManager_war_exploded/chi-tiet-sp/home");
         }

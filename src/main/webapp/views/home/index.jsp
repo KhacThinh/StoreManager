@@ -11,7 +11,6 @@
 <body>
 <jsp:include page="/layout/header.jsp"></jsp:include>
 <div class="container">
-    <h4>Email: ${email}</h4>
     <div class="row py-2">
         <div class="row md-3">
             <c:forEach items="${list}" var="chiTietSp">
