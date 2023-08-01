@@ -54,16 +54,16 @@ public class SanPhamServlet extends HttpServlet {
 
     protected void edit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        SanPham sanPham = sanPhamService
-                .findAllByObject()
-                .stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElse(null);
-        request.setAttribute("sanPham", sanPham);
-        request.getRequestDispatcher("/views/san-pham/update.jsp")
-                .forward(request, response);
+//        int id = Integer.parseInt(request.getParameter("id"));
+//        SanPham sanPham = sanPhamService
+//                .findAllByObject()
+//                .stream()
+//                .filter(t -> t.getId() == id)
+//                .findFirst()
+//                .orElse(null);
+//        request.setAttribute("sanPham", sanPham);
+//        request.getRequestDispatcher("/views/san-pham/update.jsp")
+//                .forward(request, response);
     }
 
 
@@ -80,22 +80,22 @@ public class SanPhamServlet extends HttpServlet {
 
     protected void insert(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = sanPhamService.findAllByObject().size();
-        String ma = request.getParameter("ma");
-        String ten = request.getParameter("ten");
-        SanPham sanPham = new SanPham(++id, ma, ten);
-        sanPhamService.save(sanPham);
-        response.sendRedirect("/StoreManager_war_exploded/san-pham/index");
+//        int id = sanPhamService.findAllByObject().size();
+//        String ma = request.getParameter("ma");
+//        String ten = request.getParameter("ten");
+//        SanPham sanPham = new SanPham(++id, ma, ten);
+//        sanPhamService.save(sanPham);
+//        response.sendRedirect("/StoreManager_war_exploded/san-pham/index");
     }
 
     protected void update(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String ma = request.getParameter("ma");
-        String ten = request.getParameter("ten");
-        SanPham sanPham = new SanPham(id, ma, ten);
-        sanPhamService.update(sanPham);
-        response.sendRedirect("/StoreManager_war_exploded/san-pham/index");
+//        int id = Integer.parseInt(request.getParameter("id"));
+//        String ma = request.getParameter("ma");
+//        String ten = request.getParameter("ten");
+//        SanPham sanPham = new SanPham(id, ma, ten);
+//        sanPhamService.update(sanPham);
+//        response.sendRedirect("/StoreManager_war_exploded/san-pham/index");
     }
 
 

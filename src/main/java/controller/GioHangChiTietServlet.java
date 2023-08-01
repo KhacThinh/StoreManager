@@ -98,31 +98,31 @@ public class GioHangChiTietServlet extends HttpServlet {
         int giaGiam = Integer.parseInt(req.getParameter("giaGiam"));
         int soLuongMua = Integer.parseInt(req.getParameter("soLuongMua"));
         int giaBan = soLuongMua * Integer.parseInt(req.getParameter("giaBan"));
-        List<GioHang> list = gioHangService
-                .findAllByObject()
-                .stream()
-                .sorted((o1, o2) -> (o2.getId() - o1.getId()))
-                .collect(Collectors.toList());
-        GioHang gioHang = list.get(0);
-        ChiTietSP chiTietSP = chiTietSPService
-                .findAllByObject()
-                .stream()
-                .filter(t -> t.getId() == id)
-                .findFirst().orElse(null);
-        GioHang gioHang1 = gioHangService.findAllByObject()
-                .stream()
-                .sorted((o1, o2) -> o2.getId() - o1.getId())
-                .findFirst()
-                .orElse(null);
-        GioHang gioHang2 = gioHang1.builder()
-                .id(gioHang1.getId() + 1)
-                .ma("GH" + gioHang1.getId() + 1)
-                .build();
-        gioHangService.save(gioHang2);
-        GioHangChiTiet gioHangChiTiet = new GioHangChiTiet(gioHang, chiTietSP, soLuongMua, giaBan, giaGiam);
-        gioHangChiTietService.save(gioHangChiTiet);
-        req.setAttribute("listGHCT", gioHangChiTietService.findAllByObject());
-        req.getRequestDispatcher("/views/gio-hang-ct/index.jsp")
-                .forward(req, resp);
+//        List<GioHang> list = gioHangService
+//                .findAllByObject()
+//                .stream()
+//                .sorted((o1, o2) -> (o2.getId() - o1.getId()))
+//                .collect(Collectors.toList());
+//        GioHang gioHang = list.get(0);
+//        ChiTietSP chiTietSP = chiTietSPService
+//                .findAllByObject()
+//                .stream()
+//                .filter(t -> t.getId() == id)
+//                .findFirst().orElse(null);
+//        GioHang gioHang1 = gioHangService.findAllByObject()
+//                .stream()
+//                .sorted((o1, o2) -> o2.getId() - o1.getId())
+//                .findFirst()
+//                .orElse(null);
+//        GioHang gioHang2 = gioHang1.builder()
+//                .id(gioHang1.getId() + 1)
+//                .ma("GH" + gioHang1.getId() + 1)
+//                .build();
+//        gioHangService.save(gioHang2);
+//        GioHangChiTiet gioHangChiTiet = new GioHangChiTiet(gioHang, chiTietSP, soLuongMua, giaBan, giaGiam);
+//        gioHangChiTietService.save(gioHangChiTiet);
+//        req.setAttribute("listGHCT", gioHangChiTietService.findAllByObject());
+//        req.getRequestDispatcher("/views/gio-hang-ct/index.jsp")
+//                .forward(req, resp);
     }
 }

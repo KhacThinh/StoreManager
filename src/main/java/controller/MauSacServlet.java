@@ -54,16 +54,16 @@ public class MauSacServlet extends HttpServlet {
 
     protected void edit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        MauSac mauSac = mauSacService
-                .findAllByObject()
-                .stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElse(null);
-        request.setAttribute("mauSac", mauSac);
-        request.getRequestDispatcher("/views/mau-sac/update.jsp")
-                .forward(request, response);
+//        int id = Integer.parseInt(request.getParameter("id"));
+//        MauSac mauSac = mauSacService
+//                .findAllByObject()
+//                .stream()
+//                .filter(t -> t.getId() == id)
+//                .findFirst()
+//                .orElse(null);
+//        request.setAttribute("mauSac", mauSac);
+//        request.getRequestDispatcher("/views/mau-sac/update.jsp")
+//                .forward(request, response);
     }
 
 
@@ -80,24 +80,24 @@ public class MauSacServlet extends HttpServlet {
 
     protected void insert(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = mauSacService.findAllByObject().size();
-        String ma = request.getParameter("ma");
-        String ten = request.getParameter("ten");
-        MauSac mauSac = new MauSac(++id, ma, ten);
-        mauSacService.save(mauSac);
-        request.setAttribute("list", mauSacService.findAllByObject());
-        request.getRequestDispatcher("/views/mau-sac/index.jsp")
-                .forward(request, response);
+//        int id = mauSacService.findAllByObject().size();
+//        String ma = request.getParameter("ma");
+//        String ten = request.getParameter("ten");
+//        MauSac mauSac = new MauSac(++id, ma, ten);
+//        mauSacService.save(mauSac);
+//        request.setAttribute("list", mauSacService.findAllByObject());
+//        request.getRequestDispatcher("/views/mau-sac/index.jsp")
+//                .forward(request, response);
     }
 
     protected void update(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String ma = request.getParameter("ma");
-        String ten = request.getParameter("ten");
-        MauSac mauSac = new MauSac(id, ma, ten);
-        mauSacService.update(mauSac);
-        response.sendRedirect("/StoreManager_war_exploded/mau-sac/index");
+//        int id = Integer.parseInt(request.getParameter("id"));
+//        String ma = request.getParameter("ma");
+//        String ten = request.getParameter("ten");
+//        MauSac mauSac = new MauSac(id, ma, ten);
+//        mauSacService.update(mauSac);
+//        response.sendRedirect("/StoreManager_war_exploded/mau-sac/index");
     }
 
 

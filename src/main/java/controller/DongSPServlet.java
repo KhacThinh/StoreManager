@@ -55,13 +55,13 @@ public class DongSPServlet extends HttpServlet {
     protected void edit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        DongSP mauSac = dongSPService
-                .findAllByObject()
-                .stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElse(null);
-        request.setAttribute("dongSP", mauSac);
+//        DongSP mauSac = dongSPService
+//                .findAllByObject()
+//                .stream()
+//                .filter(t -> t.getId() == id)
+//                .findFirst()
+//                .orElse(null);
+//        request.setAttribute("dongSP", mauSac);
         request.getRequestDispatcher("/views/dong-sp/update.jsp")
                 .forward(request, response);
     }
@@ -83,9 +83,9 @@ public class DongSPServlet extends HttpServlet {
         int id = dongSPService.findAllByObject().size();
         String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
-        DongSP mauSac = new DongSP(++id, ma, ten);
-        dongSPService.save(mauSac);
-        request.setAttribute("list", dongSPService.findAllByObject());
+//        DongSP mauSac = new DongSP(++id, ma, ten);
+//        dongSPService.save(mauSac);
+//        request.setAttribute("list", dongSPService.findAllByObject());
         request.getRequestDispatcher("/views/dong-sp/index.jsp")
                 .forward(request, response);
     }
@@ -95,8 +95,8 @@ public class DongSPServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
-        DongSP mauSac = new DongSP(id, ma, ten);
-        dongSPService.update(mauSac);
+//        DongSP mauSac = new DongSP(id, ma, ten);
+//        dongSPService.update(mauSac);
         response.sendRedirect("/StoreManager_war_exploded/dong-sp/index");
     }
 

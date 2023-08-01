@@ -1,73 +1,86 @@
 package model.repository.imple;
 
 
+import common.utils.HibernateUtil;
+import jakarta.persistence.TypedQuery;
 import model.entity.CuaHang;
 import model.repository.CuaHangRepository;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class CuaHangReposImple implements CuaHangRepository {
 
-    private final static List<CuaHang> list = new ArrayList<>();
+    private final Session Hsession;
 
     public CuaHangReposImple() {
-    }
-
-    static {
-        list.add(new CuaHang(1, "CH01", "Thế Giới Di Động", "Ngõ 134 đường Cầu Diễn", "Hà Nội", "Việt Nam", true));
-        list.add(new CuaHang(2, "CH02", "Điện Máy Xanh", "Số 10 Trần Duy Hưng", "Hà Nội", "Việt Nam", true));
-        list.add(new CuaHang(3, "CH03", "Lotte Mart", "Tầng 3, TTTM Lotte Mart", "Hồ Chí Minh", "Việt Nam", true));
-        list.add(new CuaHang(4, "CH04", "FPT Shop", "Tầng 1, Tòa nhà FPT Cầu Giấy", "Hà Nội", "Việt Nam", true));
-        list.add(new CuaHang(5, "CH05", "Nguyễn Kim", "Số 8A Trần Hưng Đạo", "Hồ Chí Minh", "Việt Nam", true));
+        Hsession = HibernateUtil.getFACTORY().openSession();
     }
 
 
     @Override
     public List<CuaHang> findAllByObject() {
-        return list;
+        String hql = "SELECT ch FROM CuaHang ch";
+        return Hsession.createQuery(hql, CuaHang.class).getResultList();
     }
 
     @Override
     public boolean save(CuaHang cuaHang) {
-        return list.add(cuaHang);
+        Transaction transaction = Hsession.getTransaction();
+        transaction.begin();
+        try {
+            Hsession.persist(cuaHang);
+            transaction.commit();
+            return true;
+        } catch (Exception ex) {
+            transaction.rollback();
+        }
+        return false;
     }
 
     @Override
     public void update(CuaHang cuaHang) {
-        int id = cuaHang.getId() - 1;
-        list.set(id, cuaHang);
+        Transaction transaction = Hsession.getTransaction();
+        transaction.begin();
+        try {
+            Hsession.merge(cuaHang);
+            transaction.commit();
+        } catch (Exception ex) {
+            transaction.rollback();
+        }
     }
 
     @Override
     public boolean delete(Object o) {
-        CuaHang cuaHang = (CuaHang) o;
-        for (int i = 0; i <= list.size(); i++) {
-            if (cuaHang.getId() == list.get(i).getId()) {
-                list.set(i, cuaHang);
-                break;
-            }
+        Transaction transaction = Hsession.getTransaction();
+        transaction.begin();
+        try {
+            Hsession.save(o);
+            transaction.commit();
+            return true;
+        } catch (Exception ex) {
+            transaction.rollback();
         }
-        return true;
+        return false;
     }
 
     @Override
     public CuaHang findById(Object o) {
-        Integer id = Integer.parseInt((String) o);
-        return list
-                .stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElse(null);
+        String hql = "SELECT ch FROM CuaHang ch WHERE ch.id = :id";
+        TypedQuery<CuaHang> hangTypedQuery = Hsession.createQuery(hql, CuaHang.class);
+        hangTypedQuery.setParameter("id", UUID.fromString(o.toString()));
+        CuaHang cuaHang = hangTypedQuery.getSingleResult();
+        return cuaHang;
     }
 
     @Override
     public List<CuaHang> findByName(String name) {
-        List<CuaHang> cuaHangList = this.list
-                .stream()
-                .filter(t -> t.getTen().toLowerCase().contains(name.toLowerCase()))
-                .collect(Collectors.toList());
-        return cuaHangList;
+        String hql = "SELECT ch FROM CuaHang ch WHERE ch.ten LIKE '%?%'";
+        TypedQuery<CuaHang> hangTypedQuery = Hsession.createQuery(hql, CuaHang.class);
+        hangTypedQuery.setParameter(1, name);
+        return hangTypedQuery.getResultList();
     }
 }

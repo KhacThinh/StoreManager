@@ -94,18 +94,18 @@ public class GioHangServlet extends HttpServlet {
 
     protected void insert(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        KhachHang khachHang = khachHangService
-                .findAllByObject()
-                .stream()
-                .filter(t -> t.getId() == 2)
-                .findFirst().orElse(null);
-        int id = 1;
-        String maGioHang = "GH" + id;
-        String tenNguoiNhan = req.getParameter("tenNguoiNhan");
-        String diaChi = req.getParameter("diaChi");
-        String sdt = req.getParameter("sdt");
-        GioHang gioHang = new GioHang(id, khachHang, maGioHang, new Date(), new Date(), tenNguoiNhan, diaChi, sdt, true);
-        gioHangService.save(gioHang);
-        resp.sendRedirect("/StoreManager_war_exploded/");
+//        KhachHang khachHang = khachHangService
+//                .findAllByObject()
+//                .stream()
+//                .filter(t -> t.getId() == 2)
+//                .findFirst().orElse(null);
+//        int id = 1;
+//        String maGioHang = "GH" + id;
+//        String tenNguoiNhan = req.getParameter("tenNguoiNhan");
+//        String diaChi = req.getParameter("diaChi");
+//        String sdt = req.getParameter("sdt");
+//        GioHang gioHang = new GioHang(id, khachHang, maGioHang, new Date(), new Date(), tenNguoiNhan, diaChi, sdt, true);
+//        gioHangService.save(gioHang);
+//        resp.sendRedirect("/StoreManager_war_exploded/");
     }
 }

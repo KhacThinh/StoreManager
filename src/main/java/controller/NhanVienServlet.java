@@ -106,39 +106,39 @@ public class NhanVienServlet extends HttpServlet {
 
     protected void edit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        NhanVien nhanVien = nhanVienService
-                .findAllByObject()
-                .stream()
-                .filter(t -> t.getId() == id)
-                .findFirst().orElse(null);
-        Optional<NhanVien> optional = Optional.ofNullable(nhanVien);
-        List<CuaHang> cuaHangList = cuaHangService.findAllByObject();
-        List<ChucVu> chucVuList = chucVuService.findAllByObject();
-        request.setAttribute("listCuaHang", cuaHangList);
-        request.setAttribute("listChucVu", chucVuList);
-        request.setAttribute("listGuiBC", nhanVienService.findAllByObject());
-        if (optional.isPresent()) {
-            request.setAttribute("nhanVien", optional.get());
-            request.getRequestDispatcher("/views/nhan-vien/edit.jsp")
-                    .forward(request, response);
-        }
+//        int id = Integer.parseInt(request.getParameter("id"));
+//        NhanVien nhanVien = nhanVienService
+//                .findAllByObject()
+//                .stream()
+//                .filter(t -> t.getId() == id)
+//                .findFirst().orElse(null);
+//        Optional<NhanVien> optional = Optional.ofNullable(nhanVien);
+//        List<CuaHang> cuaHangList = cuaHangService.findAllByObject();
+//        List<ChucVu> chucVuList = chucVuService.findAllByObject();
+//        request.setAttribute("listCuaHang", cuaHangList);
+//        request.setAttribute("listChucVu", chucVuList);
+//        request.setAttribute("listGuiBC", nhanVienService.findAllByObject());
+//        if (optional.isPresent()) {
+//            request.setAttribute("nhanVien", optional.get());
+//            request.getRequestDispatcher("/views/nhan-vien/edit.jsp")
+//                    .forward(request, response);
+//        }
 
     }
 
     protected void delete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        NhanVien nv = nhanVienService
-                .findAllByObject()
-                .stream()
-                .filter(t -> t.getId() == id)
-                .findFirst().orElse(null);
-        nv.setTrangThai(false);
-        nhanVienService.delete(nv);
-        request.setAttribute("list", nhanVienService.findAllByObject());
-        request.getRequestDispatcher("/views/nhan-vien/index.jsp")
-                .forward(request, response);
+//        int id = Integer.parseInt(request.getParameter("id"));
+//        NhanVien nv = nhanVienService
+//                .findAllByObject()
+//                .stream()
+//                .filter(t -> t.getId() == id)
+//                .findFirst().orElse(null);
+//        nv.setTrangThai(false);
+//        nhanVienService.delete(nv);
+//        request.setAttribute("list", nhanVienService.findAllByObject());
+//        request.getRequestDispatcher("/views/nhan-vien/index.jsp")
+//                .forward(request, response);
 
     }
 
@@ -173,19 +173,19 @@ public class NhanVienServlet extends HttpServlet {
         CuaHang cuaHang = cuaHangService.findById(request.getParameter("idCH"));
         ChucVu chucVu = chucVuService.findById(request.getParameter("idCV"));
 
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = dateFormat.parse(ngaySinh);
-            NhanVien nhanVien = new NhanVien(++id, ma, ho, tenDem, ten, gt, date, diaChi, sdt, matKhau, cuaHang, chucVu, idGuiBC, true);
-            if (nhanVien != null) {
-                nhanVienService.save(nhanVien);
-                response.sendRedirect("/StoreManager_war_exploded/nhan-vien/index");
-            } else {
-                request.setAttribute("loi", "Khong thanh cong");
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//            Date date = dateFormat.parse(ngaySinh);
+//            NhanVien nhanVien = new NhanVien(++id, ma, ho, tenDem, ten, gt, date, diaChi, sdt, matKhau, cuaHang, chucVu, idGuiBC, true);
+//            if (nhanVien != null) {
+//                nhanVienService.save(nhanVien);
+//                response.sendRedirect("/StoreManager_war_exploded/nhan-vien/index");
+//            } else {
+//                request.setAttribute("loi", "Khong thanh cong");
+//            }
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
     }
 
     protected void update(HttpServletRequest request, HttpServletResponse response)
@@ -207,18 +207,18 @@ public class NhanVienServlet extends HttpServlet {
         }
         CuaHang cuaHang = cuaHangService.findById(request.getParameter("idCH"));
         ChucVu chucVu = chucVuService.findById(request.getParameter("idCV"));
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            Date date = dateFormat.parse(ngaySinh);
-            NhanVien nhanVien = new NhanVien(id, ma, ho, tenDem, ten, gt, date, diaChi, sdt, matKhau, cuaHang, chucVu, idGuiBC, true);
-            if (nhanVien != null) {
-                nhanVienService.update(nhanVien);
-                response.sendRedirect("/StoreManager_war_exploded/nhan-vien/index");
-            } else {
-                request.setAttribute("loi", "Khong thanh cong");
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//            Date date = dateFormat.parse(ngaySinh);
+//            NhanVien nhanVien = new NhanVien(id, ma, ho, tenDem, ten, gt, date, diaChi, sdt, matKhau, cuaHang, chucVu, idGuiBC, true);
+//            if (nhanVien != null) {
+//                nhanVienService.update(nhanVien);
+//                response.sendRedirect("/StoreManager_war_exploded/nhan-vien/index");
+//            } else {
+//                request.setAttribute("loi", "Khong thanh cong");
+//            }
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
     }
 }

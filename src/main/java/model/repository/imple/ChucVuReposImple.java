@@ -1,42 +1,54 @@
 package model.repository.imple;
 
+import common.utils.HibernateUtil;
+import jakarta.persistence.TypedQuery;
 import model.entity.ChucVu;
 import model.repository.ChucVuRepository;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 public class ChucVuReposImple implements ChucVuRepository {
 
-    private final static List<ChucVu> list = new ArrayList<>();
+    private final Session Hsession;
 
     public ChucVuReposImple() {
-    }
-
-    static {
-        list.add(new ChucVu(1, "CV1", "Nhân Viên"));
-        list.add(new ChucVu(2, "CV2", "Trưởng Phòng"));
-        list.add(new ChucVu(3, "CV3", "Kế Toán"));
+        Hsession = HibernateUtil.getFACTORY().openSession();
     }
 
 
     @Override
     public List<ChucVu> findAllByObject() {
-        return list.stream()
-                .sorted((o1, o2) -> o2.getId() - o1.getId())
-                .collect(Collectors.toList());
+        String hql = "SELECT cv FROM ChucVu cv";
+        return Hsession.createQuery(hql,ChucVu.class).getResultList();
     }
 
     @Override
     public boolean save(ChucVu chucVu) {
-        return list.add(chucVu);
+        Transaction transaction = Hsession.getTransaction();
+        transaction.begin();
+        try {
+            Hsession.persist(chucVu);
+            transaction.commit();
+            return true;
+        } catch (Exception ex) {
+            transaction.rollback();
+        }
+        return false;
     }
 
     @Override
     public void update(ChucVu chucVu) {
-        int id = chucVu.getId() - 1;
-        list.set(id, chucVu);
+        Transaction transaction = Hsession.getTransaction();
+        transaction.begin();
+        try {
+            Hsession.merge(chucVu);
+            transaction.commit();
+        } catch (Exception ex) {
+            transaction.rollback();
+        }
     }
 
     @Override
@@ -46,16 +58,18 @@ public class ChucVuReposImple implements ChucVuRepository {
 
     @Override
     public ChucVu findById(Object o) {
-        Integer id = Integer.parseInt((String) o);
-        return list
-                .stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElse(null);
+        String hql = "SELECT cv FROM ChucVu cv WHERE cv.id = :id";
+        return Hsession.createQuery(hql, ChucVu.class)
+                .setParameter("id", UUID.fromString(o.toString()))
+                .getSingleResult();
     }
 
     @Override
     public List<ChucVu> findByName(String name) {
-        return null;
+        String hql = "SELECT cv FROM ChucVu cv WHERE cv.ten LIKE '%?%'";
+        TypedQuery<ChucVu> chucVuTypedQuery = Hsession.createQuery(hql, ChucVu.class);
+        chucVuTypedQuery.setParameter(1, name);
+        List<ChucVu> list = chucVuTypedQuery.getResultList();
+        return list;
     }
 }

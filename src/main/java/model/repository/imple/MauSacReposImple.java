@@ -1,42 +1,55 @@
 package model.repository.imple;
 
+import common.utils.HibernateUtil;
+import jakarta.persistence.TypedQuery;
+import model.entity.CuaHang;
 import model.entity.MauSac;
 import model.repository.MauSacRepository;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class MauSacReposImple implements MauSacRepository {
-    private final static List<MauSac> list = new ArrayList<>();
+    private final Session Hsession;
 
-    static {
-        list.add(new MauSac(1, "#FF0000", "Đỏ"));
-        list.add(new MauSac(2, "#00FF00", "Xanh lá"));
-        list.add(new MauSac(3, "#0000FF", "Xanh dương"));
-        list.add(new MauSac(4, "#FFFF00", "Vàng"));
-        list.add(new MauSac(5, "#FF00FF", "Hồng"));
-        list.add(new MauSac(6, "#00FFFF", "Xanh ngọc"));
-        list.add(new MauSac(7, "#FFFFFF", "Trắng"));
+    public MauSacReposImple() {
+        Hsession = HibernateUtil.getFACTORY().openSession();
     }
 
 
     @Override
     public List<MauSac> findAllByObject() {
-        return list.stream()
-                .sorted((o1, o2) -> o2.getId() - o1.getId())
-                .collect(Collectors.toList());
+        String hql = "SELECT ch FROM MauSac ch";
+        return Hsession.createQuery(hql, MauSac.class).getResultList();
     }
 
     @Override
     public boolean save(MauSac mauSac) {
-        return list.add(mauSac);
+        Transaction transaction = Hsession.getTransaction();
+        transaction.begin();
+        try {
+            Hsession.persist(mauSac);
+            transaction.commit();
+            return true;
+        } catch (Exception ex) {
+            transaction.rollback();
+        }
+        return false;
     }
 
     @Override
     public void update(MauSac mauSac) {
-        int id = mauSac.getId() - 1;
-        list.set(id, mauSac);
+        Transaction transaction = Hsession.getTransaction();
+        transaction.begin();
+        try {
+            Hsession.merge(mauSac);
+            transaction.commit();
+        } catch (Exception ex) {
+            transaction.rollback();
+        }
     }
 
     @Override
@@ -46,16 +59,17 @@ public class MauSacReposImple implements MauSacRepository {
 
     @Override
     public MauSac findById(Object o) {
-        Integer id = Integer.parseInt((String) o);
-        return list
-                .stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElse(null);
+        String hql = "SELECT ch FROM MauSac ch WHERE ch.id = :id";
+        TypedQuery<MauSac> hangTypedQuery = Hsession.createQuery(hql, MauSac.class);
+        hangTypedQuery.setParameter("id", UUID.fromString(o.toString()));
+        return hangTypedQuery.getSingleResult();
     }
 
     @Override
     public List<MauSac> findByName(String name) {
-        return null;
+        String hql = "SELECT ch FROM MauSac ch WHERE ch.ten LIKE '%?%'";
+        TypedQuery<MauSac> hangTypedQuery = Hsession.createQuery(hql, MauSac.class);
+        hangTypedQuery.setParameter(1, name);
+        return hangTypedQuery.getResultList();
     }
 }

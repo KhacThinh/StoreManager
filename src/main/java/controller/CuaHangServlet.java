@@ -63,26 +63,26 @@ public class CuaHangServlet extends HttpServlet {
             throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
         CuaHang cuaHang = null;
-        cuaHang = cuaHangService.findAllByObject()
-                .stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElse(null);
-        req.setAttribute("cuaHang", cuaHang);
+//        cuaHang = cuaHangService.findAllByObject()
+//                .stream()
+//                .filter(t -> t.getId() == id)
+//                .findFirst()
+//                .orElse(null);
+//        req.setAttribute("cuaHang", cuaHang);
         req.getRequestDispatcher("/views/cua-hang/update.jsp").forward(req, resp);
     }
 
     protected void delete(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         Integer id = Integer.parseInt(req.getParameter("id"));
-        CuaHang cuaHang = cuaHangService
-                .findAllByObject()
-                .stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElse(null);
-        cuaHang.setTrangThai(false);
-        cuaHangService.delete(cuaHang);
+//        CuaHang cuaHang = cuaHangService
+//                .findAllByObject()
+//                .stream()
+//                .filter(t -> t.getId() == id)
+//                .findFirst()
+//                .orElse(null);
+//        cuaHang.setTrangThai(false);
+//        cuaHangService.delete(cuaHang);
         req.setAttribute("list", cuaHangService.findAllByObject());
         req.getRequestDispatcher("/views/cua-hang/show.jsp").forward(req, resp);
     }
@@ -121,8 +121,8 @@ public class CuaHangServlet extends HttpServlet {
         String diaChi = req.getParameter("diaChi");
         String thanhPho = req.getParameter("thanhPho");
         String quocGia = req.getParameter("quocGia");
-        CuaHang cuaHang = new CuaHang(++id, ma, ten, diaChi, thanhPho, quocGia, true);
-        cuaHangService.save(cuaHang);
+//        CuaHang cuaHang = new CuaHang(++id, ma, ten, diaChi, thanhPho, quocGia, true);
+//        cuaHangService.save(cuaHang);
         req.setAttribute("list", cuaHangService.findAllByObject());
         req.getRequestDispatcher("/views/cua-hang/show.jsp").forward(req, resp);
     }
@@ -135,8 +135,8 @@ public class CuaHangServlet extends HttpServlet {
         String diaChi = req.getParameter("diaChi");
         String thanhPho = req.getParameter("thanhPho");
         String quocGia = req.getParameter("quocGia");
-        CuaHang cuaHang = new CuaHang(id, ma, ten, diaChi, thanhPho, quocGia, true);
-        cuaHangService.update(cuaHang);
+//        CuaHang cuaHang = new CuaHang(id, ma, ten, diaChi, thanhPho, quocGia, true);
+//        cuaHangService.update(cuaHang);
         req.setAttribute("list", cuaHangService.findAllByObject());
         req.getRequestDispatcher("/views/cua-hang/show.jsp").forward(req, resp);
     }

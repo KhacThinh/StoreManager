@@ -55,11 +55,11 @@ public class ChucVuServlet extends HttpServlet {
     protected void edit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        ChucVu chucVu = chucVuService.findAllByObject().stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElse(null);
-        request.setAttribute("chucVu", chucVu);
+//        ChucVu chucVu = chucVuService.findAllByObject().stream()
+//                .filter(t -> t.getId() == id)
+//                .findFirst()
+//                .orElse(null);
+//        request.setAttribute("chucVu", chucVu);
         request.getRequestDispatcher("/views/chuc-vu/update.jsp")
                 .forward(request, response);
     }
@@ -81,15 +81,15 @@ public class ChucVuServlet extends HttpServlet {
         int id = chucVuService.findAllByObject().size();
         String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
-        ChucVu chucVu = new ChucVu(++id, ma, ten);
-        if (chucVuService.save(chucVu)) {
-            request.setAttribute("list", chucVuService.findAllByObject());
-            request.getRequestDispatcher("/views/chuc-vu/index.jsp")
-                    .forward(request, response);
-        } else {
-            request.setAttribute("Loi", "Dữ Liệu Rỗng");
-            response.sendRedirect("/StoreManager_war_exploded/chuc-vu/create");
-        }
+//        ChucVu chucVu = new ChucVu(++id, ma, ten);
+//        if (chucVuService.save(chucVu)) {
+//            request.setAttribute("list", chucVuService.findAllByObject());
+//            request.getRequestDispatcher("/views/chuc-vu/index.jsp")
+//                    .forward(request, response);
+//        } else {
+//            request.setAttribute("Loi", "Dữ Liệu Rỗng");
+//            response.sendRedirect("/StoreManager_war_exploded/chuc-vu/create");
+//        }
     }
 
     protected void update(HttpServletRequest request, HttpServletResponse response)
@@ -97,8 +97,8 @@ public class ChucVuServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
-        ChucVu chucVu = new ChucVu(id, ma, ten);
-        chucVuService.update(chucVu);
+//        ChucVu chucVu = new ChucVu(id, ma, ten);
+//        chucVuService.update(chucVu);
         response.sendRedirect("/StoreManager_war_exploded/chuc-vu/index");
     }
 

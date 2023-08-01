@@ -37,17 +37,17 @@ public class KhachHangServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String uri = request.getRequestURI();
-        if (uri.contains("create")) {
-            this.create(request, response);
-        } else if (uri.contains("edit")) {
-            this.edit(request, response);
-        } else if (uri.contains("delete")) {
-            this.delete(request, response);
-        } else if (uri.contains("search")) {
-            this.search(request, response);
-        } else {
-            this.index(request, response);
-        }
+//        if (uri.contains("create")) {
+//            this.create(request, response);
+//        } else if (uri.contains("edit")) {
+//            this.edit(request, response);
+//        } else if (uri.contains("delete")) {
+//            this.delete(request, response);
+//        } else if (uri.contains("search")) {
+//            this.search(request, response);
+//        } else {
+//            this.index(request, response);
+//        }
     }
 
     protected void index(HttpServletRequest request, HttpServletResponse response)
@@ -75,34 +75,34 @@ public class KhachHangServlet extends HttpServlet {
 
     protected void edit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        KhachHang khachHang = khachHangService
-                .findAllByObject()
-                .stream()
-                .filter(khachHang1 -> khachHang1.getId() == id)
-                .findFirst().orElse(null);
-        if (khachHang != null) {
-            request.setAttribute("kh", khachHang);
-            request.getRequestDispatcher("/views/khach-hang/edit.jsp")
-                    .forward(request, response);
-        } else {
-            System.out.println("rong");
-        }
+//        int id = Integer.parseInt(request.getParameter("id"));
+//        KhachHang khachHang = khachHangService
+//                .findAllByObject()
+//                .stream()
+//                .filter(khachHang1 -> khachHang1.getId() == id)
+//                .findFirst().orElse(null);
+//        if (khachHang != null) {
+//            request.setAttribute("kh", khachHang);
+//            request.getRequestDispatcher("/views/khach-hang/edit.jsp")
+//                    .forward(request, response);
+//        } else {
+//            System.out.println("rong");
+//        }
     }
 
     protected void delete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        KhachHang khachHang = khachHangService
-                .findAllByObject()
-                .stream()
-                .filter(t -> t.getId() == id)
-                .findFirst().orElse(null);
-        khachHang.setTrangThai(false);
-        khachHangService.delete(khachHang);
-        request.setAttribute("list", khachHangService.findAllByObject());
-        request.getRequestDispatcher("/views/khach-hang/index.jsp")
-                .forward(request, response);
+//        int id = Integer.parseInt(request.getParameter("id"));
+//        KhachHang khachHang = khachHangService
+//                .findAllByObject()
+//                .stream()
+//                .filter(t -> t.getId() == id)
+//                .findFirst().orElse(null);
+//        khachHang.setTrangThai(false);
+//        khachHangService.delete(khachHang);
+//        request.setAttribute("list", khachHangService.findAllByObject());
+//        request.getRequestDispatcher("/views/khach-hang/index.jsp")
+//                .forward(request, response);
     }
 
     protected void search(HttpServletRequest req, HttpServletResponse resp)
@@ -144,21 +144,21 @@ public class KhachHangServlet extends HttpServlet {
         String thanhPho = request.getParameter("thanhPho");
         String quocGia = request.getParameter("quocGia");
         String matKhau = request.getParameter("matKhau");
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = dateFormat.parse(ngaySinh);
-            KhachHang khachHang = new KhachHang(++id, ma, ho, tenDem, ten, date, sdt, diaChi, thanhPho, quocGia, matKhau, true);
-            if (khachHang != null) {
-                khachHangService.save(khachHang);
-                request.setAttribute("list", khachHangService.findAllByObject());
-                request.getRequestDispatcher("/views/khach-hang/index.jsp")
-                        .forward(request, response);
-            } else {
-                request.setAttribute("loi", "Khong thanh cong");
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//            Date date = dateFormat.parse(ngaySinh);
+//            KhachHang khachHang = new KhachHang(++id, ma, ho, tenDem, ten, date, sdt, diaChi, thanhPho, quocGia, matKhau, true);
+//            if (khachHang != null) {
+//                khachHangService.save(khachHang);
+//                request.setAttribute("list", khachHangService.findAllByObject());
+//                request.getRequestDispatcher("/views/khach-hang/index.jsp")
+//                        .forward(request, response);
+//            } else {
+//                request.setAttribute("loi", "Khong thanh cong");
+//            }
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
     }
 
     protected void update(HttpServletRequest request, HttpServletResponse response)
@@ -174,20 +174,20 @@ public class KhachHangServlet extends HttpServlet {
         String thanhPho = request.getParameter("thanhPho");
         String quocGia = request.getParameter("quocGia");
         String matKhau = request.getParameter("matKhau");
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            Date date = dateFormat.parse(ngaySinh);
-            KhachHang khachHang = new KhachHang(id, ma, ho, tenDem, ten, date, sdt, diaChi, thanhPho, quocGia, matKhau, true);
-            if (khachHang != null) {
-                khachHangService.update(khachHang);
-                request.setAttribute("list", khachHangService.findAllByObject());
-                request.getRequestDispatcher("/views/khach-hang/index.jsp")
-                        .forward(request, response);
-            } else {
-                request.setAttribute("loi", "Khong thanh cong");
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//            Date date = dateFormat.parse(ngaySinh);
+//            KhachHang khachHang = new KhachHang(id, ma, ho, tenDem, ten, date, sdt, diaChi, thanhPho, quocGia, matKhau, true);
+//            if (khachHang != null) {
+//                khachHangService.update(khachHang);
+//                request.setAttribute("list", khachHangService.findAllByObject());
+//                request.getRequestDispatcher("/views/khach-hang/index.jsp")
+//                        .forward(request, response);
+//            } else {
+//                request.setAttribute("loi", "Khong thanh cong");
+//            }
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
     }
 }

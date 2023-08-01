@@ -1,39 +1,54 @@
 package model.repository.imple;
 
+import common.utils.HibernateUtil;
+import jakarta.persistence.TypedQuery;
+import model.entity.CuaHang;
 import model.entity.DongSP;
 import model.repository.DongSanPhamRepository;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 public class DongSPReposImple implements DongSanPhamRepository {
-    private final static List<DongSP> list = new ArrayList<>();
+    private final Session Hsession;
 
-    static {
-        list.add(new DongSP(1, "DSP001", "Giá rẻ"));
-        list.add(new DongSP(2, "DSP002", "Bình Thường"));
-        list.add(new DongSP(3, "DSP003", "Cao Cấp"));
+    public DongSPReposImple() {
+        Hsession = HibernateUtil.getFACTORY().openSession();
     }
 
 
     @Override
     public List<DongSP> findAllByObject() {
-        return list;
-//                .stream()
-//                .sorted((o1, o2) -> o2.getId() - o1.getId())
-//                .collect(Collectors.toList());
+        String hql = "SELECT dongsp FROM DongSP dongsp";
+        return Hsession.createQuery(hql, DongSP.class).getResultList();
     }
 
     @Override
     public boolean save(DongSP dongSP) {
-        return list.add(dongSP);
+        Transaction transaction = Hsession.getTransaction();
+        transaction.begin();
+        try {
+            Hsession.persist(dongSP);
+            transaction.commit();
+            return true;
+        } catch (Exception ex) {
+            transaction.rollback();
+        }
+        return false;
     }
 
     @Override
     public void update(DongSP dongSP) {
-        int id = dongSP.getId() - 1;
-        list.set(id, dongSP);
+        Transaction transaction = Hsession.getTransaction();
+        transaction.begin();
+        try {
+            Hsession.persist(dongSP);
+            transaction.commit();
+        } catch (Exception ex) {
+            transaction.rollback();
+        }
     }
 
     @Override
@@ -43,16 +58,17 @@ public class DongSPReposImple implements DongSanPhamRepository {
 
     @Override
     public DongSP findById(Object o) {
-        Integer id = Integer.parseInt((String) o);
-        return list
-                .stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElse(null);
+        String hql = "SELECT dongSP FROM DongSP dongSP WHERE dongSP.id = :id";
+        TypedQuery<DongSP> hangTypedQuery = Hsession.createQuery(hql, DongSP.class);
+        hangTypedQuery.setParameter("id", UUID.fromString(o.toString()));
+        return hangTypedQuery.getSingleResult();
     }
 
     @Override
     public List<DongSP> findByName(String name) {
-        return null;
+        String hql = "SELECT ch FROM DongSP ch WHERE ch.ten LIKE '%?%'";
+        TypedQuery<DongSP> hangTypedQuery = Hsession.createQuery(hql, DongSP.class);
+        hangTypedQuery.setParameter(1, name);
+        return hangTypedQuery.getResultList();
     }
 }
