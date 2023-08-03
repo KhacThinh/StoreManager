@@ -6,10 +6,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.entity.ChucVu;
+import model.entity.MauSac;
 import service.ChucVuService;
 import service.imple.ChucVuServiceImple;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @WebServlet({
@@ -42,7 +44,18 @@ public class ChucVuServlet extends HttpServlet {
 
     protected void index(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("list", chucVuService.findAllByObject());
+        String searchName = request.getParameter("ten");
+        if (searchName == null) {
+            request.setAttribute("list", chucVuService.findAllByObject());
+        } else {
+            request.setAttribute("searchName", searchName);
+            List<ChucVu> list = chucVuService.findByName(searchName);
+            if (list.isEmpty()) {
+                request.setAttribute("thongBao", "Không tìm thấy " + searchName);
+            } else {
+                request.setAttribute("list", list);
+            }
+        }
         request.getRequestDispatcher("/views/chuc-vu/index.jsp")
                 .forward(request, response);
     }

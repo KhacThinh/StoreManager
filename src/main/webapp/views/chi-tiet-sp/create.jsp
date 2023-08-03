@@ -94,7 +94,7 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label class="form-label">Năm Bảo Hành</label>
-                    <input type="date" name="namBH" class="form-control" required/>
+                    <input type="number" name="namBH" class="form-control" min="0" required/>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Mô Tả</label>

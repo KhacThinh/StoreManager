@@ -10,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -53,28 +54,24 @@ public class HibernateUtil {
 
     public static void main(String[] args) {
         Session hSession = getFACTORY().openSession();
-//        String hql = "SELECT ch FROM NhanVien ch";
-//        TypedQuery<NhanVien> hangTypedQuery = hSession.createQuery(hql, NhanVien.class);
-////        hangTypedQuery.setParameter("id", "KH0003");
-//        List<NhanVien> sanPham =  hangTypedQuery.getResultList();
-//        if(sanPham.isEmpty()){
-//            System.out.println("Khong tim thấy");
-//        }else{
-//            sanPham.forEach(System.out::println);
-//        }
 
+        String idToFind = "0f34b393-005f-43c1-b234-3469f3d84681";
+        UUID uuidToFind = UUID.fromString(idToFind);
 
-        String hql = "SELECT ch FROM NhanVien ch where ch.id = :ma";
-        TypedQuery<NhanVien> hangTypedQuery = hSession.createQuery(hql, NhanVien.class);
-        hangTypedQuery.setParameter("ma", "C7E31E21-6A41-5440-8F35-7005390C7DC5");
-        NhanVien sanPham = hangTypedQuery.getSingleResult();
+        String hql = "SELECT ch FROM ChiTietSP ch";
+        TypedQuery<ChiTietSP> hangTypedQuery = hSession.createQuery(hql, ChiTietSP.class);
+        List<ChiTietSP> list = hangTypedQuery.getResultList();
 
-//        UUID id = UUID.fromString("A9F78E85-8054-4DF9-A9E3-CF70426B20AD");
-//        NhanVien sanPham = hSession.find(NhanVien.class, id);
-        if (sanPham == null) {
-            System.out.println("Khong tim thấy");
+        list.forEach( chiTietSP -> System.out.println(chiTietSP.getId()));
+
+        Optional<ChiTietSP> chiTietSP = list.stream()
+                .filter(chiTietSP1 -> chiTietSP1.getId().equals(uuidToFind))
+                .findFirst();
+
+        if (chiTietSP.isPresent()) {
+            System.out.println(chiTietSP.get().toString());
         } else {
-            System.out.println(sanPham.toString());
+            System.out.println("Khong tim thay");
         }
 
     }

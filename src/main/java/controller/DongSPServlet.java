@@ -5,11 +5,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.entity.ChucVu;
 import model.entity.DongSP;
 import service.DongSanPhamService;
 import service.imple.DongSPServiceImple;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @WebServlet({
@@ -42,7 +44,20 @@ public class DongSPServlet extends HttpServlet {
 
     protected void index(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("list", dongSPService.findAllByObject());
+        String searchName = request.getParameter("ten");
+        if (searchName == null) {
+            request.setAttribute("list", dongSPService.findAllByObject());
+        } else {
+            request.setAttribute("searchName", searchName);
+            List<DongSP> list = dongSPService.findByName(searchName);
+            if (list.isEmpty()) {
+                request.setAttribute("thongBao", "Không tìm thấy " + searchName);
+                request.getRequestDispatcher("/views/dong-sp/index.jsp")
+                        .forward(request, response);
+            } else {
+                request.setAttribute("list", list);
+            }
+        }
         request.getRequestDispatcher("/views/dong-sp/index.jsp")
                 .forward(request, response);
     }

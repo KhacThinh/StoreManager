@@ -5,15 +5,12 @@ import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import model.entity.*;
 import model.repository.*;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class ChiTietSPRepoImple implements ChiTietSanPhamRepository {
 
@@ -64,11 +61,19 @@ public class ChiTietSPRepoImple implements ChiTietSanPhamRepository {
 
     @Override
     public ChiTietSP findById(Object o) {
-        String hql = "SELECT ch FROM ChiTietSP ch WHERE ch.id = :id";
+        String idToFind = o.toString();
+        UUID uuidToFind = UUID.fromString(idToFind);
+        String hql = "SELECT ch FROM ChiTietSP ch";
         TypedQuery<ChiTietSP> hangTypedQuery = Hsession.createQuery(hql, ChiTietSP.class);
-        hangTypedQuery.setParameter("id", UUID.fromString(o.toString()));
-        ChiTietSP chiTietSP = hangTypedQuery.getSingleResult();
-        return chiTietSP;
+        List<ChiTietSP> list = hangTypedQuery.getResultList();
+        Optional<ChiTietSP> chiTietSP = list.stream()
+                .filter(chiTietSP1 -> chiTietSP1.getId().equals(uuidToFind))
+                .findFirst();
+
+        if (chiTietSP.isPresent()) {
+            return chiTietSP.get();
+        }
+        return null;
     }
 
     @Override
@@ -86,9 +91,7 @@ public class ChiTietSPRepoImple implements ChiTietSanPhamRepository {
         String hql = "SELECT ctsp FROM ChiTietSP ctsp";
         Query query = Hsession.createQuery(hql, ChiTietSP.class);
         int ketThuc = Math.min(batDau + kichThuocTrang, query.getResultList().size());
-        query.setFirstResult(batDau);
-        query.setMaxResults(ketThuc);
-        List<ChiTietSP> list = query.getResultList();
+        List<ChiTietSP> list = query.getResultList().subList(batDau, ketThuc);
         return list;
     }
 

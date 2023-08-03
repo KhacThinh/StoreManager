@@ -55,7 +55,7 @@ public class NhanVienServlet extends HttpServlet {
             this.edit(request, response);
         } else if (uri.contains("delete")) {
             this.delete(request, response);
-        }else {
+        } else {
             this.index(request, response);
         }
     }
@@ -74,8 +74,8 @@ public class NhanVienServlet extends HttpServlet {
             request.setAttribute("list", nhanVienService.findByPaing(index));
         } else {
             List<NhanVien> list = nhanVienService.findByName(name);
+            request.setAttribute("searchName", name);
             if (list.isEmpty()) {
-                request.setAttribute("searchName", name);
                 request.setAttribute("thongBao", "Khong tim thay cua hang " + name);
             } else {
                 request.setAttribute("list", list);

@@ -6,10 +6,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.entity.NSX;
+import model.entity.SanPham;
 import service.NhaSanXuatService;
 import service.imple.NSXServiceImple;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @WebServlet({
@@ -42,7 +44,20 @@ public class NSXServlet extends HttpServlet {
 
     protected void index(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("list", nsxService.findAllByObject());
+        String searchName = request.getParameter("ten");
+        if (searchName == null) {
+            request.setAttribute("list", nsxService.findAllByObject());
+        } else {
+            request.setAttribute("searchName", searchName);
+            List<NSX> list = nsxService.findByName(searchName);
+            if (list.isEmpty()) {
+                request.setAttribute("thongBao", "Không tìm thấy " + searchName);
+                request.getRequestDispatcher("/views/nsx/index.jsp")
+                        .forward(request, response);
+            } else {
+                request.setAttribute("list", list);
+            }
+        }
         request.getRequestDispatcher("/views/nsx/index.jsp")
                 .forward(request, response);
     }

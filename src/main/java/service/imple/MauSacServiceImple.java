@@ -53,6 +53,6 @@ public class MauSacServiceImple implements MauSacService {
 
     @Override
     public List<MauSac> findByName(String name) {
-        return null;
+        return mauSacRepository.findByName(name);
     }
 }

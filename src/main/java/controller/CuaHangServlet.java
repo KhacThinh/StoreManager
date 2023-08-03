@@ -50,8 +50,6 @@ public class CuaHangServlet extends HttpServlet {
         String searchName = request.getParameter("ten");
         if (searchName == null) {
             request.setAttribute("list", cuaHangService.findAllByObject());
-            request.getRequestDispatcher("/views/cua-hang/show.jsp")
-                    .forward(request, response);
         } else {
             request.setAttribute("searchName", searchName);
             List<CuaHang> list = cuaHangService.findByName(searchName);
@@ -61,10 +59,10 @@ public class CuaHangServlet extends HttpServlet {
                         .forward(request, response);
             } else {
                 request.setAttribute("list", list);
-                request.getRequestDispatcher("/views/cua-hang/show.jsp")
-                        .forward(request, response);
             }
         }
+        request.getRequestDispatcher("/views/cua-hang/show.jsp")
+                .forward(request, response);
     }
 
     protected void create(HttpServletRequest req, HttpServletResponse resp)

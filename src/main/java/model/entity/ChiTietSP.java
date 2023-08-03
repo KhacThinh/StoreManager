@@ -18,23 +18,23 @@ public class ChiTietSP {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdSP")
+    @JoinColumn(name = "IdSP", referencedColumnName = "id")
     private SanPham idSP;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdNsx")
+    @JoinColumn(name = "IdNsx", referencedColumnName = "id")
     private NSX idNsx;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdMauSac")
+    @JoinColumn(name = "IdMauSac", referencedColumnName = "id")
     private MauSac idMauSac;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdDongSP")
+    @JoinColumn(name = "IdDongSP", referencedColumnName = "id")
     private DongSP idDongSP;
 
     @Column(name = "NamBH")
-    private Date namBH;
+    private int namBH;
 
     @Column(name = "MoTa")
     private String moTa;
@@ -51,7 +51,7 @@ public class ChiTietSP {
     public ChiTietSP() {
     }
 
-    public ChiTietSP(UUID id, SanPham idSP, NSX idNsx, MauSac idMauSac, DongSP idDongSP, Date namBH, String moTa, int soLuongTon, int giaNhap, int giaBan) {
+    public ChiTietSP(UUID id, SanPham idSP, NSX idNsx, MauSac idMauSac, DongSP idDongSP, int namBH, String moTa, int soLuongTon, int giaNhap, int giaBan) {
         this.id = id;
         this.idSP = idSP;
         this.idNsx = idNsx;
@@ -104,11 +104,11 @@ public class ChiTietSP {
         this.idDongSP = idDongSP;
     }
 
-    public Date getNamBH() {
+    public int getNamBH() {
         return namBH;
     }
 
-    public void setNamBH(Date namBH) {
+    public void setNamBH(int namBH) {
         this.namBH = namBH;
     }
 

@@ -103,8 +103,7 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label class="form-label">Năm Bảo Hành</label>
-                    <fmt:formatDate value="${chiTietSP.namBH}" pattern="dd-MM-yyyy" var="namBH"></fmt:formatDate>
-                    <input type="text" name="namBH" class="form-control" value="${namBH}" placeholder="dd-MM-yyyy" required/>
+                    <input type="number" name="namBH" class="form-control" value="${chiTietSP.namBH}" placeholder="dd-MM-yyyy" required/>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Mô Tả</label>

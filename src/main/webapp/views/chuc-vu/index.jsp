@@ -17,14 +17,16 @@
 <body>
 <jsp:include page="create.jsp"></jsp:include>
 <div class="container">
-    <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search Name" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
-    </nav>
+    <%--    <nav class="navbar bg-body-tertiary">--%>
+    <div class="container-fluid">
+        <form class="d-flex" role="search" action="/StoreManager_war_exploded/chuc-vu/index" method="get">
+            <input class="form-control me-2" name="ten" type="search" placeholder="Search Name"
+                   aria-label="Search" value="${searchName}">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        <span style="color: red">${thongBao}</span>
+    </div>
+    <%--    </nav>--%>
     <table class="table table-striped table-hover">
         <thead>
         <tr>

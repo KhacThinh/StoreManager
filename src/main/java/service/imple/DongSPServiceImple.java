@@ -55,6 +55,6 @@ public class DongSPServiceImple implements DongSanPhamService {
 
     @Override
     public List<DongSP> findByName(String name) {
-        return null;
+        return dongSPRepository.findByName(name);
     }
 }
