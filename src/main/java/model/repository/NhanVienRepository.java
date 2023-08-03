@@ -19,4 +19,6 @@ public interface NhanVienRepository {
     public List<NhanVien> findByName(String name);
 
     public List<NhanVien> findByPaing(int index);
+
+    public NhanVien findByMa(Object o);
 }

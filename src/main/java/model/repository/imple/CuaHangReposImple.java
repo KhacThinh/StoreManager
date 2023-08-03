@@ -69,18 +69,15 @@ public class CuaHangReposImple implements CuaHangRepository {
 
     @Override
     public CuaHang findById(Object o) {
-        String hql = "SELECT ch FROM CuaHang ch WHERE ch.id = :id";
-        TypedQuery<CuaHang> hangTypedQuery = Hsession.createQuery(hql, CuaHang.class);
-        hangTypedQuery.setParameter("id", UUID.fromString(o.toString()));
-        CuaHang cuaHang = hangTypedQuery.getSingleResult();
+        CuaHang cuaHang = Hsession.find(CuaHang.class, UUID.fromString(o.toString()));
         return cuaHang;
     }
 
     @Override
     public List<CuaHang> findByName(String name) {
-        String hql = "SELECT ch FROM CuaHang ch WHERE ch.ten LIKE '%?%'";
+        String hql = "SELECT ch FROM CuaHang ch WHERE ch.ten LIKE :name and ch.trangThai = true";
         TypedQuery<CuaHang> hangTypedQuery = Hsession.createQuery(hql, CuaHang.class);
-        hangTypedQuery.setParameter(1, name);
+        hangTypedQuery.setParameter("name", "%" + name + "%");
         return hangTypedQuery.getResultList();
     }
 }

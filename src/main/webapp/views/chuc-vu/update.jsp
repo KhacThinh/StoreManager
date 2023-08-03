@@ -29,13 +29,16 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Mã</label>
-                <input type="text" name="ma" class="form-control" value="${chucVu.ma}" required/>
+                <input type="text" name="ma" class="form-control" value="${chucVu.ma}"/>
             </div>
             <div class="mb-3">
                 <label class="form-label">Chức Vụ</label>
-                <input type="text" name="ten" class="form-control" value="${chucVu.ten}" required/>
+                <input type="text" name="ten" class="form-control" value="${chucVu.ten}"/>
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <div class="mb-3">
+                <span style="color: red">${messageError}</span>
+            </div>
+            <button type="submit" class="btn btn-primary">Sửa</button>
         </form>
     </div>
 </div>

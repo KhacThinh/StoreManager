@@ -17,7 +17,7 @@
             Thêm</a>
         <nav class="navbar bg-body-tertiary">
             <div class="container-fluid">
-                <form class="d-flex" role="search" action="/QuanLiCuaHang_war_exploded/khach-hang/search" method="get">
+                <form class="d-flex" role="search" action="/StoreManager_war_exploded/khach-hang/index" method="get">
                     <input class="form-control me-2" name="ten" type="search" placeholder="Search Name"
                            aria-label="Search" value="${searchName}">
                     <button class="btn btn-outline-success" type="submit">Search</button>
@@ -54,9 +54,9 @@
             <td>${kh.thanhPho}</td>
             <td>${kh.quocGia}</td>
             <td>${kh.matKhau}</td>
-            <td><a href="/StoreManager_war_exploded/khach-hang/edit?id=${kh.id}"
+            <td><a href="/StoreManager_war_exploded/khach-hang/edit?ma=${kh.ma}"
                    class="btn btn-outline-warning"><i class="bi bi-pencil"></i> Edit</a></td>
-            <td><a href="/StoreManager_war_exploded/khach-hang/delete?id=${kh.id}"
+            <td><a href="/StoreManager_war_exploded/khach-hang/delete?ma=${kh.ma}"
                    class="btn btn-outline-danger"><i class="bi bi-trash3-fill"></i> Delete</a></td>
         </tr>
     </c:forEach>
@@ -66,7 +66,7 @@
     <ul class="pagination pagination-lg">
         <c:forEach var="i" begin="1" end="${endPage}">
             <li class="page-item">
-                <a class="page-link" href="/StoreManager_war_exploded/nhan-vien/index?paing=${i}">${i}</a></li>
+                <a class="page-link" href="/StoreManager_war_exploded/khach-hang/index?paing=${i}">${i}</a></li>
         </c:forEach>
     </ul>
 </nav>

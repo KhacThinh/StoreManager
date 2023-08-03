@@ -6,33 +6,30 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.util.Date;
+import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "ChiTietSP")
 public class ChiTietSP {
     @Id
     @GeneratedValue
     @Column(name = "Id")
-    private int id;
+    private UUID id;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdSP")
     private SanPham idSP;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdNsx")
     private NSX idNsx;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdMauSac")
     private MauSac idMauSac;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "IdDongSP")
     private DongSP idDongSP;
 
@@ -51,4 +48,115 @@ public class ChiTietSP {
     @Column(name = "GiaBan")
     private int giaBan;
 
+    public ChiTietSP() {
+    }
+
+    public ChiTietSP(UUID id, SanPham idSP, NSX idNsx, MauSac idMauSac, DongSP idDongSP, Date namBH, String moTa, int soLuongTon, int giaNhap, int giaBan) {
+        this.id = id;
+        this.idSP = idSP;
+        this.idNsx = idNsx;
+        this.idMauSac = idMauSac;
+        this.idDongSP = idDongSP;
+        this.namBH = namBH;
+        this.moTa = moTa;
+        this.soLuongTon = soLuongTon;
+        this.giaNhap = giaNhap;
+        this.giaBan = giaBan;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public SanPham getIdSP() {
+        return idSP;
+    }
+
+    public void setIdSP(SanPham idSP) {
+        this.idSP = idSP;
+    }
+
+    public NSX getIdNsx() {
+        return idNsx;
+    }
+
+    public void setIdNsx(NSX idNsx) {
+        this.idNsx = idNsx;
+    }
+
+    public MauSac getIdMauSac() {
+        return idMauSac;
+    }
+
+    public void setIdMauSac(MauSac idMauSac) {
+        this.idMauSac = idMauSac;
+    }
+
+    public DongSP getIdDongSP() {
+        return idDongSP;
+    }
+
+    public void setIdDongSP(DongSP idDongSP) {
+        this.idDongSP = idDongSP;
+    }
+
+    public Date getNamBH() {
+        return namBH;
+    }
+
+    public void setNamBH(Date namBH) {
+        this.namBH = namBH;
+    }
+
+    public String getMoTa() {
+        return moTa;
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
+    }
+
+    public int getSoLuongTon() {
+        return soLuongTon;
+    }
+
+    public void setSoLuongTon(int soLuongTon) {
+        this.soLuongTon = soLuongTon;
+    }
+
+    public int getGiaNhap() {
+        return giaNhap;
+    }
+
+    public void setGiaNhap(int giaNhap) {
+        this.giaNhap = giaNhap;
+    }
+
+    public int getGiaBan() {
+        return giaBan;
+    }
+
+    public void setGiaBan(int giaBan) {
+        this.giaBan = giaBan;
+    }
+
+    @Override
+    public String toString() {
+        return "ChiTietSP{" +
+                "id=" + id +
+                ", idSP=" + idSP +
+                ", idNsx=" + idNsx +
+                ", idMauSac=" + idMauSac +
+                ", idDongSP=" + idDongSP +
+                ", namBH=" + namBH +
+                ", moTa='" + moTa + '\'' +
+                ", soLuongTon=" + soLuongTon +
+                ", giaNhap=" + giaNhap +
+                ", giaBan=" + giaBan +
+                '}';
+    }
 }

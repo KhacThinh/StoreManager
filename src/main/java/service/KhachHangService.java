@@ -19,4 +19,6 @@ public interface KhachHangService {
     public List<KhachHang> findByName(String name);
 
     public List<KhachHang> findByPaing(int index);
+
+    public KhachHang findByMa(Object o);
 }

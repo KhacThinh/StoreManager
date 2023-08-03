@@ -19,10 +19,10 @@ public class SanPhamServiceImple implements SanPhamService {
 
     @Override
     public List<SanPham> findAllByObject() {
-        List<SanPham> list = sanPhamRepository.findAllByObject();
-        return list
+        return sanPhamRepository
+                .findAllByObject()
                 .stream()
-                .sorted((o1, o2) -> o2.getId() - o1.getId())
+                .sorted((o1, o2) -> o2.getMa().compareToIgnoreCase(o1.getMa()))
                 .collect(Collectors.toList());
     }
 
@@ -54,6 +54,6 @@ public class SanPhamServiceImple implements SanPhamService {
 
     @Override
     public List<SanPham> findByName(String name) {
-        return null;
+        return sanPhamRepository.findByName(name);
     }
 }

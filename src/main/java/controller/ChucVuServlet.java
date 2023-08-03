@@ -10,6 +10,7 @@ import service.ChucVuService;
 import service.imple.ChucVuServiceImple;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @WebServlet({
         "/chuc-vu/index",
@@ -54,12 +55,9 @@ public class ChucVuServlet extends HttpServlet {
 
     protected void edit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-//        ChucVu chucVu = chucVuService.findAllByObject().stream()
-//                .filter(t -> t.getId() == id)
-//                .findFirst()
-//                .orElse(null);
-//        request.setAttribute("chucVu", chucVu);
+        UUID id = UUID.fromString(request.getParameter("id"));
+        ChucVu chucVu = chucVuService.findById(id);
+        request.setAttribute("chucVu", chucVu);
         request.getRequestDispatcher("/views/chuc-vu/update.jsp")
                 .forward(request, response);
     }
@@ -78,28 +76,58 @@ public class ChucVuServlet extends HttpServlet {
 
     protected void insert(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = chucVuService.findAllByObject().size();
+        StringBuilder stringBuilder = new StringBuilder();
         String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
-//        ChucVu chucVu = new ChucVu(++id, ma, ten);
-//        if (chucVuService.save(chucVu)) {
-//            request.setAttribute("list", chucVuService.findAllByObject());
-//            request.getRequestDispatcher("/views/chuc-vu/index.jsp")
-//                    .forward(request, response);
-//        } else {
-//            request.setAttribute("Loi", "Dữ Liệu Rỗng");
-//            response.sendRedirect("/StoreManager_war_exploded/chuc-vu/create");
-//        }
+        if (ma.equals("")) {
+            stringBuilder.append("trỗng mã ");
+        }
+        if (ten.equals("")) {
+            stringBuilder.append("trỗng tên ");
+        }
+        boolean checkMa = chucVuService
+                .findAllByObject()
+                .stream()
+                .anyMatch(sanPham -> sanPham.getMa().equalsIgnoreCase(ma));
+        if (checkMa) {
+            stringBuilder.append("trùng mã.");
+        }
+        ChucVu chucVu = new ChucVu(null, ma, ten);
+        if (stringBuilder.length() > 0) {
+            request.setAttribute("chucVu", chucVu);
+            request.setAttribute("messageError", "Không được để " + stringBuilder.toString());
+            request.setAttribute("list", chucVuService.findAllByObject());
+            request.getRequestDispatcher("/views/chuc-vu/index.jsp")
+                    .forward(request, response);
+        } else {
+            chucVuService.save(chucVu);
+            response.sendRedirect("/StoreManager_war_exploded/chuc-vu/index");
+        }
     }
 
     protected void update(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        StringBuilder stringBuilder = new StringBuilder();
+        UUID id = UUID.fromString(request.getParameter("id"));
         String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
-//        ChucVu chucVu = new ChucVu(id, ma, ten);
-//        chucVuService.update(chucVu);
-        response.sendRedirect("/StoreManager_war_exploded/chuc-vu/index");
+        if (ma.equals("")) {
+            stringBuilder.append("trỗng mã ");
+        }
+        if (ten.equals("")) {
+            stringBuilder.append("trỗng tên ");
+        }
+        if (stringBuilder.length() > 0) {
+            ChucVu chucVu = chucVuService.findById(id);
+            request.setAttribute("chucVu", chucVu);
+            request.setAttribute("messageError", "Không được để " + stringBuilder.toString());
+            request.getRequestDispatcher("/views/chuc-vu/update.jsp")
+                    .forward(request, response);
+        } else {
+            ChucVu chucVu = new ChucVu(id, ma, ten);
+            chucVuService.update(chucVu);
+            response.sendRedirect("/StoreManager_war_exploded/chuc-vu/index");
+        }
     }
 
 

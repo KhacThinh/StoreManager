@@ -16,7 +16,7 @@
             Thêm</a>
         <nav class="navbar bg-body-tertiary">
             <div class="container-fluid">
-                <form class="d-flex" role="search" action="/StoreManager_war_exploded/cua-hang/search" method="get">
+                <form class="d-flex" role="search" action="/StoreManager_war_exploded/cua-hang/index" method="get">
                     <input class="form-control me-2" name="ten" type="search" placeholder="Search Name"
                            aria-label="Search" value="${searchName}">
                     <button class="btn btn-outline-success" type="submit">Search</button>

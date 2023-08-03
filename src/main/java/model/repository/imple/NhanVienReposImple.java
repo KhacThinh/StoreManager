@@ -1,82 +1,98 @@
 package model.repository.imple;
 
 import common.utils.HibernateUtil;
-import model.entity.ChucVu;
-import model.entity.CuaHang;
-import model.entity.MauSac;
-import model.entity.NhanVien;
-import model.repository.ChucVuRepository;
-import model.repository.CuaHangRepository;
+import jakarta.persistence.TypedQuery;
+import model.entity.*;
 import model.repository.NhanVienRepository;
 import org.hibernate.Session;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 public class NhanVienReposImple implements NhanVienRepository {
-
     private final Session Hsession;
-    private final CuaHangRepository cuaHangRepository;
-    private final ChucVuRepository chucVuRepository;
-
 
     public NhanVienReposImple() {
-        cuaHangRepository = new CuaHangReposImple();
-        chucVuRepository = new ChucVuReposImple();
         Hsession = HibernateUtil.getFACTORY().openSession();
     }
 
 
     @Override
     public List<NhanVien> findAllByObject() {
-        return list;
+        String hql = "SELECT nv FROM NhanVien nv";
+        TypedQuery<NhanVien> query = Hsession.createQuery(hql);
+        return query.getResultList();
     }
 
     @Override
     public boolean save(NhanVien nhanVien) {
-        return list.add(nhanVien);
+        Hsession.getTransaction().begin();
+        try {
+            Hsession.persist(nhanVien);
+            Hsession.getTransaction().commit();
+            return true;
+        } catch (Exception ex) {
+            Hsession.getTransaction().rollback();
+        }
+        return false;
     }
 
     @Override
     public void update(NhanVien nhanVien) {
-        int id = nhanVien.getId() - 1;
-        list.set(id, nhanVien);
+        Hsession.getTransaction().begin();
+        try {
+            Hsession.merge(nhanVien);
+            Hsession.getTransaction().commit();
+        } catch (Exception ex) {
+            Hsession.getTransaction().rollback();
+        }
     }
 
     @Override
     public boolean delete(Object o) {
-        NhanVien nhanVien = (NhanVien) o;
-        for (int i = 0; i <= list.size(); i++) {
-            if (nhanVien.getId() == list.get(i).getId()) {
-                list.set(i, nhanVien);
-                break;
-            }
+        Hsession.getTransaction().begin();
+        try {
+            Hsession.save((NhanVien) o);
+            Hsession.getTransaction().commit();
+            return true;
+        } catch (Exception ex) {
+            Hsession.getTransaction().rollback();
         }
-        return true;
+        return false;
     }
 
     @Override
     public NhanVien findById(Object o) {
-        return null;
+        UUID id = UUID.fromString(o.toString());
+        NhanVien nhanVien = Hsession.find(NhanVien.class, id);
+        return nhanVien;
     }
 
     @Override
     public List<NhanVien> findByName(String name) {
-        List<NhanVien> cuaHangList = this.list
-                .stream()
-                .filter(t -> t.getTen().toLowerCase().contains(name.toLowerCase()))
-                .collect(Collectors.toList());
-        return cuaHangList;
+        String hql = "SELECT nv FROM NhanVien nv WHERE nv.ten like :tenNV";
+        TypedQuery<NhanVien> query = Hsession.createQuery(hql);
+        query.setParameter("tenNV", "%" + name + "%");
+        return query.getResultList();
     }
 
     @Override
     public List<NhanVien> findByPaing(int index) {
         int kichThuocDuLieu = 3;
         int start = (index - 1) * kichThuocDuLieu;
-        int end = Math.min(start + 3, list.size());
-        return list.subList(start, end);
+        String hql = "SELECT nv FROM NhanVien nv where nv.trangThai = true order by nv.ma desc";
+        TypedQuery<NhanVien> query = Hsession.createQuery(hql);
+        int end = Math.min(start + 3, query.getResultList().size());
+        List<NhanVien> list = query.getResultList().subList(start, end);
+        return list;
+    }
+
+    @Override
+    public NhanVien findByMa(Object o) {
+        String hql = "SELECT nv FROM NhanVien nv where nv.ma = :ma";
+        TypedQuery<NhanVien> hangTypedQuery = Hsession.createQuery(hql, NhanVien.class);
+        hangTypedQuery.setParameter("ma", o.toString());
+        NhanVien nhanVien = hangTypedQuery.getSingleResult();
+        return nhanVien;
     }
 }

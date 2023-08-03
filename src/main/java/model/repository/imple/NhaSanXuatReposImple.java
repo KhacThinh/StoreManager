@@ -1,46 +1,57 @@
 package model.repository.imple;
 
+import common.utils.HibernateUtil;
+import jakarta.persistence.TypedQuery;
 import model.entity.NSX;
+import model.entity.SanPham;
 import model.repository.NhaSanXuatRepository;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class NhaSanXuatReposImple implements NhaSanXuatRepository {
-    private final static List<NSX> list = new ArrayList<>();
+    private final Session Hsession;
 
-    static {
-        list.add(new NSX(1, "NSX001", "Công ty Đồ gia dụng Hà Nội"));
-        list.add(new NSX(2, "NSX002", "Công ty Đồ gia dụng Hồ Chí Minh"));
-        list.add(new NSX(3, "NSX003", "Công ty Đồ gia dụng Đà Nẵng"));
-        list.add(new NSX(4, "NSX004", "Công ty Đồ gia dụng Huế"));
-        list.add(new NSX(5, "NSX005", "Công ty Đồ gia dụng Hải Phòng"));
-        list.add(new NSX(6, "NSX006", "Công ty Đồ gia dụng Nha Trang"));
-        list.add(new NSX(7, "NSX007", "Công ty Đồ gia dụng Cần Thơ"));
-        list.add(new NSX(8, "NSX008", "Công ty Đồ gia dụng Đà Lạt"));
-        list.add(new NSX(9, "NSX009", "Công ty Đồ gia dụng Vũng Tàu"));
-        list.add(new NSX(10, "NSX010", "Công ty Đồ gia dụng Quy Nhơn"));
+    public NhaSanXuatReposImple() {
+        Hsession = HibernateUtil.getFACTORY().openSession();
     }
 
 
     @Override
     public List<NSX> findAllByObject() {
-        return list;
-//        .stream()
-//                .sorted((o1, o2) -> o2.getId() - o1.getId())
-//                .collect(Collectors.toList());
+        String hql = "SELECT nsx FROM NSX nsx";
+        TypedQuery<NSX> query = Hsession.createQuery(hql);
+        return query.getResultList();
     }
 
     @Override
     public boolean save(NSX nsx) {
-        return list.add(nsx);
+        Transaction transaction = Hsession.getTransaction();
+        transaction.begin();
+        try {
+            Hsession.save(nsx);
+            transaction.commit();
+            return true;
+        } catch (Exception ex) {
+            transaction.rollback();
+        }
+        return false;
     }
 
     @Override
     public void update(NSX nsx) {
-        int id = nsx.getId() - 1;
-        list.set(id, nsx);
+        Transaction transaction = Hsession.getTransaction();
+        transaction.begin();
+        try {
+            Hsession.merge(nsx);
+            transaction.commit();
+        } catch (Exception ex) {
+            transaction.rollback();
+        }
     }
 
     @Override
@@ -50,16 +61,16 @@ public class NhaSanXuatReposImple implements NhaSanXuatRepository {
 
     @Override
     public NSX findById(Object o) {
-        Integer id = Integer.parseInt((String) o);
-        return list
-                .stream()
-                .filter(t -> t.getId() == id)
-                .findFirst()
-                .orElse(null);
+        UUID id = UUID.fromString(o.toString());
+        NSX nsx = Hsession.find(NSX.class, id);
+        return nsx;
     }
 
     @Override
     public List<NSX> findByName(String name) {
-        return null;
+        String hql = "SELECT sp FROM NSX sp WHERE sp.ten like :tenSP";
+        TypedQuery<NSX> query = Hsession.createQuery(hql);
+        query.setParameter("tenSP", "%" + name + "%");
+        return query.getResultList();
     }
 }

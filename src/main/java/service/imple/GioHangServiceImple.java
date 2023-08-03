@@ -5,6 +5,7 @@ import model.repository.imple.GioHangReposImple;
 import service.GioHangService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GioHangServiceImple implements GioHangService {
     private final GioHangReposImple gioHangRepository;
@@ -15,7 +16,11 @@ public class GioHangServiceImple implements GioHangService {
 
     @Override
     public List<GioHang> findAllByObject() {
-        return gioHangRepository.findAllByObject();
+        return gioHangRepository
+                .findAllByObject()
+                .stream()
+                .sorted((o1, o2) -> o1.getMa().compareToIgnoreCase(o2.getMa()))
+                .collect(Collectors.toList());
     }
 
     @Override

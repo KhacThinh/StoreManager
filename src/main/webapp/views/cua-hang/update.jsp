@@ -28,11 +28,11 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Mã</label>
-                <input type="text" name="ma" class="form-control" value="${cuaHang.ma}" required/>
+                <input type="text" name="ma" class="form-control" value="${cuaHang.ma}"/>
             </div>
             <div class="mb-3">
                 <label class="form-label">Tên Cửa Hàng</label>
-                <input type="text" name="ten" class="form-control" value="${cuaHang.ten}" required/>
+                <input type="text" name="ten" class="form-control" value="${cuaHang.ten}"/>
             </div>
             <div class="mb-3">
                 <label class="form-label">Địa Chỉ</label>
@@ -45,6 +45,9 @@
             <div class="mb-3">
                 <label class="form-label">Quốc Gia</label>
                 <input type="text" name="quocGia" class="form-control" value="${cuaHang.quocGia}" required/>
+            </div>
+            <div class="mb-3">
+                <span style="color: red">${messageError}</span>
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
         </form>

@@ -35,6 +35,9 @@
                 <label class="form-label">Tên Màu</label>
                 <input type="text" name="ten" class="form-control" value="${mauSac.ten}"/>
             </div>
+            <div class="mb-3">
+                <span style="color: red">${messageError}</span>
+            </div>
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
     </div>

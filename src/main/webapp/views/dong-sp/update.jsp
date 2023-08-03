@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Thêm Màu Sắc</title>
+    <title>Sửa Dòng Sản Phẩm</title>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
             integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
             crossorigin="anonymous"></script>
@@ -29,13 +29,16 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Mã Dòng SP</label>
-                <input type="text" name="ma" class="form-control" value="${dongSP.ma}" required/>
+                <input type="text" name="ma" class="form-control" value="${dongSP.ma}"/>
             </div>
             <div class="mb-3">
                 <label class="form-label">Tên Dòng SP</label>
-                <input type="text" name="ten" class="form-control" value="${dongSP.ten}" required/>
+                <input type="text" name="ten" class="form-control" value="${dongSP.ten}"/>
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <div class="mb-3">
+                <span style="color: red">${messageError}</span>
+            </div>
+            <button type="submit" class="btn btn-primary">Sửa</button>
         </form>
     </div>
 </div>

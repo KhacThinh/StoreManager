@@ -20,26 +20,26 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
-<h1>Thêm Khách Hàng</h1>
 <div class="container">
+    <h1>Thêm Khách Hàng</h1>
     <div class="row py-2">
         <form action="/StoreManager_war_exploded/khach-hang/insert" method="POST">
             <div class="mb-3">
                 <label class="form-label">Mã</label>
-                <input type="text" name="ma" class="form-control" required/>
+                <input type="text" name="ma" class="form-control" value="${khachHang.ma}"/>
             </div>
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label class="form-label">Họ</label>
-                    <input type="text" name="ho" class="form-control" required/>
+                    <input type="text" name="ho" class="form-control" required value="${khachHang.ho}"/>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Tên Đệm</label>
-                    <input type="text" name="tenDem" class="form-control" required/>
+                    <input type="text" name="tenDem" class="form-control" required value="${khachHang.tenDem}"/>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Tên</label>
-                    <input type="text" name="ten" class="form-control" required/>
+                    <input type="text" name="ten" class="form-control" value="${khachHang.ten}"/>
                 </div>
             </div>
             <div class="row mb-3">
@@ -49,38 +49,44 @@
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">PhoneNumber</label>
-                    <input type="text" name="sdt" class="form-control" min="0" maxlength="10" required/>
+                    <input type="text" name="sdt" class="form-control" min="0" maxlength="10" required
+                           value="${khachHang.sdt}"/>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label class="form-label">Địa Chỉ</label>
-                    <input type="text" name="diaChi" class="form-control" required/>
+                    <input type="text" name="diaChi" class="form-control" required value="${khachHang.diaChi}"/>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Thành Phố</label>
-                    <input type="text" name="thanhPho" class="form-control" required/>
+                    <input type="text" name="thanhPho" class="form-control" required value="${khachHang.thanhPho}"/>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Quốc Gia</label>
-                    <select class="form-select" name="quocGia" required>
-                        <option selected disabled>Chọn quốc gia</option>
-                        <option value="Brunei">Brunei</option>
-                        <option value="Campuchia">Campuchia</option>
-                        <option value="Indonesia">Indonesia</option>
-                        <option value="Lào">Lào</option>
-                        <option value="Malaysia">Malaysia</option>
-                        <option value="Myanmar">Myanmar</option>
-                        <option value="Philippines">Philippines</option>
-                        <option value="Singapore">Singapore</option>
-                        <option value="Thái Lan">Thái Lan</option>
-                        <option value="Việt Nam">Việt Nam</option>
+                    <select class="form-select" name="quocGia">
+                        <option disabled ${kh.quocGia == null ? 'selected' : ''}>Chọn quốc gia</option>
+                        <option value="Brunei" ${kh.quocGia == 'Brunei' ? 'selected' : ''}>Brunei</option>
+                        <option value="Campuchia" ${kh.quocGia == 'Campuchia' ? 'selected' : ''}>Campuchia</option>
+                        <option value="Indonesia" ${kh.quocGia == 'Indonesia' ? 'selected' : ''}>Indonesia</option>
+                        <option value="Lào" ${kh.quocGia == 'Lào' ? 'selected' : ''}>Lào</option>
+                        <option value="Malaysia" ${kh.quocGia == 'Malaysia' ? 'selected' : ''}>Malaysia</option>
+                        <option value="Myanmar" ${kh.quocGia == 'Myanmar' ? 'selected' : ''}>Myanmar</option>
+                        <option value="Philippines" ${kh.quocGia == 'Philippines' ? 'selected' : ''}>Philippines
+                        </option>
+                        <option value="Singapore" ${kh.quocGia == 'Singapore' ? 'selected' : ''}>Singapore</option>
+                        <option value="Thái Lan" ${kh.quocGia == 'Thái Lan' ? 'selected' : ''}>Thái Lan</option>
+                        <option value="Việt Nam" ${kh.quocGia == 'Việt Nam' ? 'selected' : ''}>Việt Nam</option>
                     </select>
                 </div>
             </div>
             <div class="mb-3">
                 <label class="form-label">Mật Khẩu</label>
-                <input type="password" name="matKhau" class="form-control" minlength="6" required/>
+                <input type="password" name="matKhau" class="form-control" minlength="6" required
+                       value="${khachHang.matKhau}"/>
+            </div>
+            <div class="mb-3">
+                <span style="color: red">${thongBao}</span>
             </div>
             <a href="/StoreManager_war_exploded/khach-hang/index" class="btn btn-secondary"><i
                     class="bi bi-backspace"></i> Hủy</a>

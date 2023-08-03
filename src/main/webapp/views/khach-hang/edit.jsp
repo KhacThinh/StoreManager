@@ -30,8 +30,9 @@
                 <div class="form-control">${kh.id}</div>
             </div>
             <div class="mb-3">
-                <label class="form-label">Mã</label>
-                <input type="text" name="ma" class="form-control" value="${kh.ma}"/>
+                <label class="form-label">ID</label>
+                <div class="form-control">${kh.ma}</div>
+                <input type="hidden" name="ma" value="${kh.ma}">
             </div>
             <div class="mb-3">
                 <label class="form-label">Nguyễn</label>
@@ -81,7 +82,9 @@
                 <label class="form-label">Mật Khẩu</label>
                 <input type="text" name="matKhau" class="form-control" value="${kh.matKhau}"/>
             </div>
-
+            <div class="mb-3">
+                <span style="color: red">${thongBao}</span>
+            </div>
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
     </div>

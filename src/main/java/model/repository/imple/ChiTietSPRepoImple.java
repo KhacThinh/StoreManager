@@ -73,9 +73,9 @@ public class ChiTietSPRepoImple implements ChiTietSanPhamRepository {
 
     @Override
     public List<ChiTietSP> findByName(String name) {
-        String hql = "SELECT ctsp FROM ChiTietSP ctsp JOIN SanPham sp ON ctsp.idSP = sp.id WHERE sp.ten like '%?%'";
+        String hql = "SELECT ctsp FROM ChiTietSP ctsp JOIN SanPham sp ON ctsp.idSP = sp.id WHERE sp.ten like :name";
         TypedQuery<ChiTietSP> chiTietSPTypedQuery = Hsession.createQuery(hql);
-        chiTietSPTypedQuery.setParameter(1, name);
+        chiTietSPTypedQuery.setParameter("name", "%" + name + "%");
         return chiTietSPTypedQuery.getResultList();
     }
 

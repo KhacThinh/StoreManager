@@ -10,6 +10,7 @@ import service.MauSacService;
 import service.imple.MauSacServiceImple;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @WebServlet({
         "/mau-sac/index",
@@ -54,16 +55,11 @@ public class MauSacServlet extends HttpServlet {
 
     protected void edit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        int id = Integer.parseInt(request.getParameter("id"));
-//        MauSac mauSac = mauSacService
-//                .findAllByObject()
-//                .stream()
-//                .filter(t -> t.getId() == id)
-//                .findFirst()
-//                .orElse(null);
-//        request.setAttribute("mauSac", mauSac);
-//        request.getRequestDispatcher("/views/mau-sac/update.jsp")
-//                .forward(request, response);
+        UUID id = UUID.fromString(request.getParameter("id"));
+        MauSac mauSac = mauSacService.findById(id);
+        request.setAttribute("mauSac", mauSac);
+        request.getRequestDispatcher("/views/mau-sac/update.jsp")
+                .forward(request, response);
     }
 
 
@@ -80,24 +76,59 @@ public class MauSacServlet extends HttpServlet {
 
     protected void insert(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        int id = mauSacService.findAllByObject().size();
-//        String ma = request.getParameter("ma");
-//        String ten = request.getParameter("ten");
-//        MauSac mauSac = new MauSac(++id, ma, ten);
-//        mauSacService.save(mauSac);
-//        request.setAttribute("list", mauSacService.findAllByObject());
-//        request.getRequestDispatcher("/views/mau-sac/index.jsp")
-//                .forward(request, response);
+        StringBuilder stringBuilder = new StringBuilder();
+        String ma = request.getParameter("ma");
+        String ten = request.getParameter("ten");
+        if (ma.equals("")) {
+            stringBuilder.append("trỗng mã ");
+        }
+        if (ten.equals("")) {
+            stringBuilder.append("trỗng tên ");
+        }
+        boolean checkMa = mauSacService
+                .findAllByObject()
+                .stream()
+                .anyMatch(sanPham -> sanPham.getMa().equalsIgnoreCase(ma));
+        if (checkMa) {
+            stringBuilder.append("trùng mã ");
+        }
+        if (stringBuilder.length() > 0) {
+            MauSac mauSac = new MauSac(null, ma, ten);
+            request.setAttribute("mauSac", mauSac);
+            request.setAttribute("messageError", "Không được để " + stringBuilder.toString());
+            request.setAttribute("list", mauSacService.findAllByObject());
+            request.getRequestDispatcher("/views/mau-sac/index.jsp")
+                    .forward(request, response);
+        } else {
+            MauSac mauSac = new MauSac(null, ma, ten);
+            mauSacService.save(mauSac);
+            response.sendRedirect("/StoreManager_war_exploded/mau-sac/index");
+        }
     }
 
     protected void update(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        int id = Integer.parseInt(request.getParameter("id"));
-//        String ma = request.getParameter("ma");
-//        String ten = request.getParameter("ten");
-//        MauSac mauSac = new MauSac(id, ma, ten);
-//        mauSacService.update(mauSac);
-//        response.sendRedirect("/StoreManager_war_exploded/mau-sac/index");
+        UUID id = UUID.fromString(request.getParameter("id"));
+        StringBuilder stringBuilder = new StringBuilder();
+        String ma = request.getParameter("ma");
+        String ten = request.getParameter("ten");
+        if (ma.equals("")) {
+            stringBuilder.append("trỗng mã ");
+        }
+        if (ten.equals("")) {
+            stringBuilder.append("trỗng tên ");
+        }
+        if (stringBuilder.length() > 0) {
+            MauSac mauSac = mauSacService.findById(id);
+            request.setAttribute("mauSac", mauSac);
+            request.setAttribute("messageError", "Không được để " + stringBuilder.toString());
+            request.getRequestDispatcher("/views/mau-sac/update.jsp")
+                    .forward(request, response);
+        } else {
+            MauSac mauSac = new MauSac(id, ma, ten);
+            mauSacService.update(mauSac);
+            response.sendRedirect("/StoreManager_war_exploded/mau-sac/index");
+        }
     }
 
 

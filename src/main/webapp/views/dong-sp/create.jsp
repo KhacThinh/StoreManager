@@ -26,11 +26,14 @@
         <form action="/StoreManager_war_exploded/dong-sp/insert" method="POST">
             <div class="mb-3">
                 <label class="form-label">Mã</label>
-                <input type="text" name="ma" class="form-control" required/>
+                <input type="text" name="ma" class="form-control" value="${dongSP.ma}"/>
             </div>
             <div class="mb-3">
                 <label class="form-label">Tên Dòng SP</label>
-                <input type="text" name="ten" class="form-control" required/>
+                <input type="text" name="ten" class="form-control" value="${dongSP.ten}"/>
+            </div>
+            <div class="mb-3">
+                <span style="color: red">${messageError}</span>
             </div>
             <a href="/StoreManager_war_exploded/chi-tiet-sp/create" class="btn btn-secondary"><i
                     class="bi bi-backspace"></i> Hủy</a>

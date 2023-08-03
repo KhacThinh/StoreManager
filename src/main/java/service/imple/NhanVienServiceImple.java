@@ -20,11 +20,11 @@ public class NhanVienServiceImple implements NhanVienService {
 
     @Override
     public List<NhanVien> findAllByObject() {
-        List<NhanVien> list = nhanVienRepository.findAllByObject();
-        return list
+        return nhanVienRepository
+                .findAllByObject()
                 .stream()
                 .filter(t -> t.isTrangThai() == true)
-                .sorted((o1, o2) -> o2.getId() - o1.getId())
+                .sorted((o1, o2) -> o2.getMa().compareToIgnoreCase(o1.getMa()))
                 .collect(Collectors.toList());
     }
 
@@ -66,5 +66,14 @@ public class NhanVienServiceImple implements NhanVienService {
     @Override
     public List<NhanVien> findByPaing(int index) {
         return nhanVienRepository.findByPaing(index);
+    }
+
+    @Override
+    public NhanVien findByMa(Object o) {
+        NhanVien nhanVien = nhanVienRepository.findByMa(o);
+        if (nhanVien != null) {
+            return nhanVien;
+        }
+        return null;
     }
 }

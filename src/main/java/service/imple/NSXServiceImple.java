@@ -7,6 +7,7 @@ import service.NhaSanXuatService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class NSXServiceImple implements NhaSanXuatService {
 
@@ -18,7 +19,11 @@ public class NSXServiceImple implements NhaSanXuatService {
 
     @Override
     public List<NSX> findAllByObject() {
-        return nsxRepository.findAllByObject();
+        return nsxRepository
+                .findAllByObject()
+                .stream()
+                .sorted((o1, o2) -> o2.getMa().compareToIgnoreCase(o1.getMa()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -49,6 +54,6 @@ public class NSXServiceImple implements NhaSanXuatService {
 
     @Override
     public List<NSX> findByName(String name) {
-        return null;
+        return nsxRepository.findByName(name);
     }
 }

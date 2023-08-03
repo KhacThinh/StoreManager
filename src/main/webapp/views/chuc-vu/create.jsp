@@ -26,15 +26,18 @@
         <form action="/StoreManager_war_exploded/chuc-vu/insert" method="POST">
             <div class="mb-3">
                 <label class="form-label">Mã</label>
-                <input type="text" name="ma" class="form-control" required/>
+                <input type="text" name="ma" class="form-control" value="${chucVu.ma}"/>
             </div>
             <div class="mb-3">
                 <label class="form-label">Chức Vụ</label>
-                <input type="text" name="ten" class="form-control" required/>
+                <input type="text" name="ten" class="form-control" value="${chucVu.ten}"/>
             </div>
-            <a href="/StoreManager_war_exploded/chuc-vu/index" class="btn btn-secondary"><i
+            <div class="mb-3">
+                <span style="color: red">${messageError}</span>
+            </div>
+            <a href="/StoreManager_war_exploded/nhan-vien/create" class="btn btn-secondary"><i
                     class="bi bi-backspace"></i> Hủy</a>
-            <button type="submit" class="btn btn-primary">Create</button>
+            <button type="submit" class="btn btn-primary">Thêm</button>
         </form>
     </div>
 </div>

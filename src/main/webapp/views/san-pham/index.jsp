@@ -17,11 +17,12 @@
 <body>
 <jsp:include page="create.jsp"></jsp:include>
 <div class="container">
-    <%--    <div class="row py-5">--%>
-    <%--        <h1>Danh sách màu sắc</h1>--%>
-    <%--        <a href="/QuanLiCuaHang_war_exploded/san-pham/create" class="btn btn-primary"><i class="bi bi-person-add"></i>--%>
-    <%--            Thêm</a>--%>
-    <%--    </div>--%>
+    <div class="container-fluid">
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search Name" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+    </div>
     <table class="table table-striped table-hover">
         <thead>
         <tr>

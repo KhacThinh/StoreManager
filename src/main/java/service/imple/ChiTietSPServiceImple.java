@@ -19,10 +19,10 @@ public class ChiTietSPServiceImple implements ChiTietSanPhamService {
 
     @Override
     public List<ChiTietSP> findAllByObject() {
-        List<ChiTietSP> list = chiTietSPRepository.findAllByObject();
-        return list
+        return chiTietSPRepository
+                .findAllByObject()
                 .stream()
-                .sorted((o1, o2) -> o2.getId() - o1.getId())
+                .sorted((o1, o2) -> o2.getId().compareTo(o1.getId()))
                 .collect(Collectors.toList());
     }
 
@@ -32,7 +32,6 @@ public class ChiTietSPServiceImple implements ChiTietSanPhamService {
         if (!optional.isPresent()) {
             return false;
         } else {
-            optional.get().setId(chiTietSPRepository.findAllByObject().size() + 1);
             return chiTietSPRepository.save(optional.get());
         }
     }
@@ -49,7 +48,7 @@ public class ChiTietSPServiceImple implements ChiTietSanPhamService {
 
     @Override
     public ChiTietSP findById(Object o) {
-        return null;
+        return chiTietSPRepository.findById(o);
     }
 
     @Override

@@ -31,8 +31,9 @@
                     <div class="form-control">${nhanVien.id}</div>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Mã</label>
-                    <input type="text" name="ma" class="form-control" value="${nhanVien.ma}"/>
+                    <label class="form-label">Id</label>
+                    <div class="form-control">${nhanVien.ma}</div>
+                    <input type="hidden" name="ma" value="${nhanVien.ma}">
                 </div>
             </div>
             <div class="row mb-3">
@@ -64,9 +65,9 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <fmt:formatDate value="${nhanVien.ngaySinh}" pattern="dd-MM-yyyy" var="birthday"></fmt:formatDate>
-                        <label class="form-label">Ngày sinh</label>
-                        <input type="text" name="ngaySinh" class="form-control" value="${birthday}"
-                               placeholder="dd-MM-yyyy"/>
+                    <label class="form-label">Ngày sinh</label>
+                    <input type="text" name="ngaySinh" class="form-control" value="${birthday}"
+                           placeholder="dd-MM-yyyy"/>
 
                 </div>
                 <div class="col-md-6">
@@ -108,14 +109,14 @@
                 <div class="col-md-4">
                     <label class="form-label">GuiBC</label>
                     <select class="form-select" name="idGuiBC">
-                        <option disabled>Chọn Gửi BC</option>
+                        <option disabled ${nhanVien.idGuiBC == null ? 'selected' : ''}>Chọn Gửi BC</option>
                         <c:forEach items="${listGuiBC}" var="lGuiBC">
-                            <option value="${lGuiBC.id}" ${lGuiBC.id == nhanVien.idGuiBC ? 'selected' : ''}>${lGuiBC.ten}</option>
+                            <option value="${lGuiBC.ma}" ${lGuiBC.id == nhanVien.idGuiBC ? 'selected' : ''}>${lGuiBC.ten}</option>
                         </c:forEach>
                     </select>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="btn btn-primary">Sửa</button>
         </form>
     </div>
 </div>

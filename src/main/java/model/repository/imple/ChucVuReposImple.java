@@ -22,7 +22,7 @@ public class ChucVuReposImple implements ChucVuRepository {
     @Override
     public List<ChucVu> findAllByObject() {
         String hql = "SELECT cv FROM ChucVu cv";
-        return Hsession.createQuery(hql,ChucVu.class).getResultList();
+        return Hsession.createQuery(hql, ChucVu.class).getResultList();
     }
 
     @Override
@@ -66,9 +66,9 @@ public class ChucVuReposImple implements ChucVuRepository {
 
     @Override
     public List<ChucVu> findByName(String name) {
-        String hql = "SELECT cv FROM ChucVu cv WHERE cv.ten LIKE '%?%'";
+        String hql = "SELECT cv FROM ChucVu cv WHERE cv.ten LIKE :name";
         TypedQuery<ChucVu> chucVuTypedQuery = Hsession.createQuery(hql, ChucVu.class);
-        chucVuTypedQuery.setParameter(1, name);
+        chucVuTypedQuery.setParameter(name, "%" + name + "%");
         List<ChucVu> list = chucVuTypedQuery.getResultList();
         return list;
     }

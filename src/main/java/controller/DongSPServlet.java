@@ -10,6 +10,7 @@ import service.DongSanPhamService;
 import service.imple.DongSPServiceImple;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @WebServlet({
         "/dong-sp/index",
@@ -54,14 +55,9 @@ public class DongSPServlet extends HttpServlet {
 
     protected void edit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-//        DongSP mauSac = dongSPService
-//                .findAllByObject()
-//                .stream()
-//                .filter(t -> t.getId() == id)
-//                .findFirst()
-//                .orElse(null);
-//        request.setAttribute("dongSP", mauSac);
+        UUID id = UUID.fromString(request.getParameter("id"));
+        DongSP mauSac = dongSPService.findById(id);
+        request.setAttribute("dongSP", mauSac);
         request.getRequestDispatcher("/views/dong-sp/update.jsp")
                 .forward(request, response);
     }
@@ -80,24 +76,59 @@ public class DongSPServlet extends HttpServlet {
 
     protected void insert(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = dongSPService.findAllByObject().size();
+        StringBuilder stringBuilder = new StringBuilder();
         String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
-//        DongSP mauSac = new DongSP(++id, ma, ten);
-//        dongSPService.save(mauSac);
-//        request.setAttribute("list", dongSPService.findAllByObject());
-        request.getRequestDispatcher("/views/dong-sp/index.jsp")
-                .forward(request, response);
+        if (ma.equals("")) {
+            stringBuilder.append("trỗng mã ");
+        }
+        if (ten.equals("")) {
+            stringBuilder.append("trỗng tên ");
+        }
+        boolean checkMa = dongSPService
+                .findAllByObject()
+                .stream()
+                .anyMatch(sanPham -> sanPham.getMa().equalsIgnoreCase(ma));
+        if (checkMa) {
+            stringBuilder.append("trùng mã ");
+        }
+        if (stringBuilder.length() > 0) {
+            DongSP mauSac = new DongSP(null, ma, ten);
+            request.setAttribute("dongSP", mauSac);
+            request.setAttribute("messageError", "Không được để " + stringBuilder.toString());
+            request.setAttribute("list", dongSPService.findAllByObject());
+            request.getRequestDispatcher("/views/dong-sp/index.jsp")
+                    .forward(request, response);
+        } else {
+            DongSP mauSac = new DongSP(null, ma, ten);
+            dongSPService.save(mauSac);
+            response.sendRedirect("/StoreManager_war_exploded/dong-sp/index");
+        }
     }
 
     protected void update(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        UUID id = UUID.fromString(request.getParameter("id"));
+        StringBuilder stringBuilder = new StringBuilder();
         String ma = request.getParameter("ma");
         String ten = request.getParameter("ten");
-//        DongSP mauSac = new DongSP(id, ma, ten);
-//        dongSPService.update(mauSac);
-        response.sendRedirect("/StoreManager_war_exploded/dong-sp/index");
+        if (ma.equals("")) {
+            stringBuilder.append("trỗng mã ");
+        }
+        if (ten.equals("")) {
+            stringBuilder.append("trỗng tên ");
+        }
+        if (stringBuilder.length() > 0) {
+            DongSP mauSac = dongSPService.findById(id);
+            request.setAttribute("dongSP", mauSac);
+            request.setAttribute("messageError", "Không được để " + stringBuilder.toString());
+            request.getRequestDispatcher("/views/dong-sp/update.jsp")
+                    .forward(request, response);
+        } else {
+            DongSP mauSac = new DongSP(id, ma, ten);
+            dongSPService.update(mauSac);
+            response.sendRedirect("/StoreManager_war_exploded/dong-sp/index");
+        }
     }
 
 

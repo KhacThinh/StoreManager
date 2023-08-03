@@ -67,9 +67,9 @@ public class MauSacReposImple implements MauSacRepository {
 
     @Override
     public List<MauSac> findByName(String name) {
-        String hql = "SELECT ch FROM MauSac ch WHERE ch.ten LIKE '%?%'";
+        String hql = "SELECT ch FROM MauSac ch WHERE ch.ten LIKE :name";
         TypedQuery<MauSac> hangTypedQuery = Hsession.createQuery(hql, MauSac.class);
-        hangTypedQuery.setParameter(1, name);
+        hangTypedQuery.setParameter(name, "%" + name + "%");
         return hangTypedQuery.getResultList();
     }
 }

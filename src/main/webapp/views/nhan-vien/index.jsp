@@ -27,7 +27,7 @@
             Thêm</a>
         <nav class="navbar bg-body-tertiary">
             <div class="container-fluid">
-                <form class="d-flex" role="search" action="/StoreManager_war_exploded/nhan-vien/search" method="get">
+                <form class="d-flex" role="search" action="/StoreManager_war_exploded/nhan-vien/index" method="get">
                     <input class="form-control me-2" name="ten" type="search" placeholder="Search Name"
                            aria-label="Search" value="${searchName}">
                     <button class="btn btn-outline-success" type="submit">Search</button>
@@ -67,10 +67,10 @@
             <td>${nhanVien.matKhau}</td>
             <td>${nhanVien.idCH.ten}</td>
             <td>${nhanVien.idCV.ten}</td>
-            <td>${nhanVien.idGuiBC}</td>
-            <td><a href="/StoreManager_war_exploded/nhan-vien/edit?id=${nhanVien.id}"
+            <td>${nhanVien.idGuiBC.ten}</td>
+            <td><a href="/StoreManager_war_exploded/nhan-vien/edit?ma=${nhanVien.ma}"
                    class="btn btn-outline-warning"><i class="bi bi-pencil"></i> Edit</a></td>
-            <td><a href="/StoreManager_war_exploded/nhan-vien/delete?id=${nhanVien.id}"
+            <td><a href="/StoreManager_war_exploded/nhan-vien/delete?ma=${nhanVien.ma}"
                    class="btn btn-outline-danger"><i class="bi bi-trash3-fill"></i> Delete</a></td>
         </tr>
     </c:forEach>

@@ -44,7 +44,7 @@ public class DongSPReposImple implements DongSanPhamRepository {
         Transaction transaction = Hsession.getTransaction();
         transaction.begin();
         try {
-            Hsession.persist(dongSP);
+            Hsession.merge(dongSP);
             transaction.commit();
         } catch (Exception ex) {
             transaction.rollback();
@@ -58,17 +58,15 @@ public class DongSPReposImple implements DongSanPhamRepository {
 
     @Override
     public DongSP findById(Object o) {
-        String hql = "SELECT dongSP FROM DongSP dongSP WHERE dongSP.id = :id";
-        TypedQuery<DongSP> hangTypedQuery = Hsession.createQuery(hql, DongSP.class);
-        hangTypedQuery.setParameter("id", UUID.fromString(o.toString()));
-        return hangTypedQuery.getSingleResult();
+        DongSP dongSP = Hsession.find(DongSP.class, UUID.fromString(o.toString()));
+        return dongSP;
     }
 
     @Override
     public List<DongSP> findByName(String name) {
-        String hql = "SELECT ch FROM DongSP ch WHERE ch.ten LIKE '%?%'";
+        String hql = "SELECT ch FROM DongSP ch WHERE ch.ten LIKE :name";
         TypedQuery<DongSP> hangTypedQuery = Hsession.createQuery(hql, DongSP.class);
-        hangTypedQuery.setParameter(1, name);
+        hangTypedQuery.setParameter("name", "%" + name + "%");
         return hangTypedQuery.getResultList();
     }
 }

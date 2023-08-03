@@ -10,6 +10,7 @@ import service.NhaSanXuatService;
 import service.imple.NSXServiceImple;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @WebServlet({
         "/nsx/index",
@@ -54,16 +55,11 @@ public class NSXServlet extends HttpServlet {
 
     protected void edit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        int id = Integer.parseInt(request.getParameter("id"));
-//        NSX nsx = nsxService
-//                .findAllByObject()
-//                .stream()
-//                .filter(t -> t.getId() == id)
-//                .findFirst()
-//                .orElse(null);
-//        request.setAttribute("nsx", nsx);
-//        request.getRequestDispatcher("/views/nsx/update.jsp")
-//                .forward(request, response);
+        UUID id = UUID.fromString(request.getParameter("id"));
+        NSX nsx = nsxService.findById(id);
+        request.setAttribute("nsx", nsx);
+        request.getRequestDispatcher("/views/nsx/update.jsp")
+                .forward(request, response);
     }
 
 
@@ -80,24 +76,60 @@ public class NSXServlet extends HttpServlet {
 
     protected void insert(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        int id = nsxService.findAllByObject().size();
-//        String ma = request.getParameter("ma");
-//        String ten = request.getParameter("ten");
-//        NSX nsx = new NSX(++id, ma, ten);
-//        nsxService.save(nsx);
-//        request.setAttribute("list", nsxService.findAllByObject());
-//        request.getRequestDispatcher("/views/nsx/index.jsp")
-//                .forward(request, response);
+        StringBuilder stringBuilder = new StringBuilder();
+        String ma = request.getParameter("ma");
+        String ten = request.getParameter("ten");
+        if (ma.equals("")) {
+            stringBuilder.append("trỗng mã ");
+        }
+        if (ten.equals("")) {
+            stringBuilder.append("trỗng tên ");
+        }
+        boolean checkMa = nsxService
+                .findAllByObject()
+                .stream()
+                .anyMatch(sanPham -> sanPham.getMa().equalsIgnoreCase(ma));
+        if (checkMa) {
+            stringBuilder.append("trùng mã ");
+        }
+        if (stringBuilder.length() > 0) {
+            NSX nsx = new NSX(null, ma, ten);
+            request.setAttribute("nsx", nsx);
+            request.setAttribute("messageError", "Không được để " + stringBuilder.toString());
+            request.setAttribute("list", nsxService.findAllByObject());
+            request.getRequestDispatcher("/views/nsx/index.jsp")
+                    .forward(request, response);
+        } else {
+            NSX nsx = new NSX(null, ma, ten);
+            nsxService.save(nsx);
+            response.sendRedirect("/StoreManager_war_exploded/nsx/index");
+
+        }
     }
 
     protected void update(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        int id = Integer.parseInt(request.getParameter("id"));
-//        String ma = request.getParameter("ma");
-//        String ten = request.getParameter("ten");
-//        NSX nsx = new NSX(id, ma, ten);
-//        nsxService.update(nsx);
-//        response.sendRedirect("/StoreManager_war_exploded/nsx/index");
+        StringBuilder stringBuilder = new StringBuilder();
+        UUID id = UUID.fromString(request.getParameter("id"));
+        String ma = request.getParameter("ma");
+        String ten = request.getParameter("ten");
+        if (ma.equals("")) {
+            stringBuilder.append("trỗng mã ");
+        }
+        if (ten.equals("")) {
+            stringBuilder.append("trỗng tên ");
+        }
+        if (stringBuilder.length() > 0) {
+            NSX nsx = nsxService.findById(id);
+            request.setAttribute("nsx", nsx);
+            request.setAttribute("messageError", "Không được để " + stringBuilder.toString());
+            request.getRequestDispatcher("/views/nsx/update.jsp")
+                    .forward(request, response);
+        } else {
+            NSX nsx = new NSX(id, ma, ten);
+            nsxService.update(nsx);
+            response.sendRedirect("/StoreManager_war_exploded/nsx/index");
+        }
     }
 
 

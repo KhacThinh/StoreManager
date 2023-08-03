@@ -17,9 +17,14 @@
 <body>
 <jsp:include page="create.jsp"></jsp:include>
 <div class="container">
-    <div class="row py-5">
-        <h1>Danh sách chức vụ</h1>
-    </div>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search Name" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
     <table class="table table-striped table-hover">
         <thead>
         <tr>

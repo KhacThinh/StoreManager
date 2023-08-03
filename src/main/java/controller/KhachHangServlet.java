@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @WebServlet({
         "/khach-hang/index",
@@ -21,8 +22,7 @@ import java.util.List;
         "/khach-hang/insert",
         "/khach-hang/edit",
         "/khach-hang/update",
-        "/khach-hang/delete",
-        "/khach-hang/search"
+        "/khach-hang/delete"
 })
 public class KhachHangServlet extends HttpServlet {
 
@@ -37,34 +37,43 @@ public class KhachHangServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String uri = request.getRequestURI();
-//        if (uri.contains("create")) {
-//            this.create(request, response);
-//        } else if (uri.contains("edit")) {
-//            this.edit(request, response);
-//        } else if (uri.contains("delete")) {
-//            this.delete(request, response);
-//        } else if (uri.contains("search")) {
-//            this.search(request, response);
-//        } else {
-//            this.index(request, response);
-//        }
+        if (uri.contains("create")) {
+            this.create(request, response);
+        } else if (uri.contains("edit")) {
+            this.edit(request, response);
+        } else if (uri.contains("delete")) {
+            this.delete(request, response);
+        } else {
+            this.index(request, response);
+        }
     }
 
     protected void index(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int abc = (int) khachHangService
-                .findAllByObject()
-                .stream()
-                .filter(t -> t.isTrangThai() == true).count();
-        int endPage = abc / 3;
-        if (abc % 3 != 0) {
-            endPage++;
+        String name = request.getParameter("ten");
+        if (name == null) {
+            int abc = (int) khachHangService.findAllByObject().stream().count();
+            int endPage = abc / 3;
+            if (abc % 3 != 0) {
+                endPage++;
+            }
+            request.setAttribute("endPage", endPage);
+            int index = request.getParameter("paing") == null ? 1 : Integer.parseInt(request.getParameter("paing"));
+            request.setAttribute("list", khachHangService.findByPaing(index));
+            request.getRequestDispatcher("/views/khach-hang/index.jsp")
+                    .forward(request, response);
+        } else {
+            List<KhachHang> list = khachHangService.findByName(name);
+            if (list.isEmpty()) {
+                request.setAttribute("searchName", name);
+                request.setAttribute("thongBao", "Không tìm thấy khách hàng " + name);
+                request.setAttribute("list", khachHangService.findAllByObject());
+            } else {
+                request.setAttribute("list", list);
+            }
+            request.getRequestDispatcher("/views/khach-hang/index.jsp")
+                    .forward(request, response);
         }
-        request.setAttribute("endPage", endPage);
-        int index = request.getParameter("paing") == null ? 1 : Integer.parseInt(request.getParameter("paing"));
-        request.setAttribute("list", khachHangService.findByPaing(index));
-        request.getRequestDispatcher("/views/khach-hang/index.jsp")
-                .forward(request, response);
     }
 
     protected void create(HttpServletRequest request, HttpServletResponse response)
@@ -75,49 +84,26 @@ public class KhachHangServlet extends HttpServlet {
 
     protected void edit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        int id = Integer.parseInt(request.getParameter("id"));
-//        KhachHang khachHang = khachHangService
-//                .findAllByObject()
-//                .stream()
-//                .filter(khachHang1 -> khachHang1.getId() == id)
-//                .findFirst().orElse(null);
-//        if (khachHang != null) {
-//            request.setAttribute("kh", khachHang);
-//            request.getRequestDispatcher("/views/khach-hang/edit.jsp")
-//                    .forward(request, response);
-//        } else {
-//            System.out.println("rong");
-//        }
+        String ma = request.getParameter("ma");
+        KhachHang khachHang = khachHangService.findByMa(ma);
+        if (khachHang != null) {
+            request.setAttribute("kh", khachHang);
+            request.getRequestDispatcher("/views/khach-hang/edit.jsp")
+                    .forward(request, response);
+        } else {
+            response.sendRedirect("/StoreManager_war_exploded/khach-hang/index");
+        }
     }
 
     protected void delete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        int id = Integer.parseInt(request.getParameter("id"));
-//        KhachHang khachHang = khachHangService
-//                .findAllByObject()
-//                .stream()
-//                .filter(t -> t.getId() == id)
-//                .findFirst().orElse(null);
-//        khachHang.setTrangThai(false);
-//        khachHangService.delete(khachHang);
-//        request.setAttribute("list", khachHangService.findAllByObject());
-//        request.getRequestDispatcher("/views/khach-hang/index.jsp")
-//                .forward(request, response);
-    }
-
-    protected void search(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        String name = req.getParameter("ten");
-        List<KhachHang> list = khachHangService.findByName(name);
-        if (list.isEmpty()) {
-            req.setAttribute("searchName", name);
-            req.setAttribute("thongBao", "Khong tim thay cua hang " + name);
-            req.setAttribute("list", khachHangService.findAllByObject());
-        } else {
-            req.setAttribute("list", list);
+        String ma = request.getParameter("ma");
+        KhachHang khachHang = khachHangService.findByMa(ma);
+        if (khachHang != null) {
+            khachHang.setTrangThai(false);
+            khachHangService.delete(khachHang);
+            response.sendRedirect("/StoreManager_war_exploded/khach-hang/index");
         }
-        req.getRequestDispatcher("/views/nhan-vien/index.jsp")
-                .forward(req, resp);
     }
 
     @Override
@@ -144,26 +130,45 @@ public class KhachHangServlet extends HttpServlet {
         String thanhPho = request.getParameter("thanhPho");
         String quocGia = request.getParameter("quocGia");
         String matKhau = request.getParameter("matKhau");
-//        try {
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//            Date date = dateFormat.parse(ngaySinh);
-//            KhachHang khachHang = new KhachHang(++id, ma, ho, tenDem, ten, date, sdt, diaChi, thanhPho, quocGia, matKhau, true);
-//            if (khachHang != null) {
-//                khachHangService.save(khachHang);
-//                request.setAttribute("list", khachHangService.findAllByObject());
-//                request.getRequestDispatcher("/views/khach-hang/index.jsp")
-//                        .forward(request, response);
-//            } else {
-//                request.setAttribute("loi", "Khong thanh cong");
-//            }
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+        StringBuilder stringBuilder = new StringBuilder();
+        if (ma.equals("")) {
+            stringBuilder.append("trỗng mã ");
+        }
+        if (ten.equals("")) {
+            stringBuilder.append("trỗng tên ");
+        }
+        boolean checkMa = khachHangService.findAllByObject()
+                .stream()
+                .anyMatch(khachHang -> khachHang.getMa().equalsIgnoreCase(ma));
+        if (checkMa) {
+            stringBuilder.append("trùng mã.");
+        }
+        if (stringBuilder.length() > 0) {
+            KhachHang khachHang = new KhachHang(null, ma, ho, tenDem, ten, null, sdt, diaChi, thanhPho, quocGia, matKhau, true);
+            request.setAttribute("khachHang", khachHang);
+            request.setAttribute("thongBao", "Không được " + stringBuilder.toString());
+            request.getRequestDispatcher("/views/khach-hang/create.jsp")
+                    .forward(request, response);
+        } else {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = dateFormat.parse(ngaySinh);
+                KhachHang khachHang = new KhachHang(null, ma, ho, tenDem, ten, date, sdt, diaChi, thanhPho, quocGia, matKhau, true);
+                if (khachHang != null) {
+                    khachHangService.save(khachHang);
+                    response.sendRedirect("/StoreManager_war_exploded/khach-hang/index");
+                } else {
+                    request.setAttribute("loi", "Khong thanh cong");
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     protected void update(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        UUID id = UUID.fromString(request.getParameter("id"));
         String ma = request.getParameter("ma");
         String ho = request.getParameter("ho");
         String tenDem = request.getParameter("tenDem");
@@ -174,20 +179,33 @@ public class KhachHangServlet extends HttpServlet {
         String thanhPho = request.getParameter("thanhPho");
         String quocGia = request.getParameter("quocGia");
         String matKhau = request.getParameter("matKhau");
-//        try {
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-//            Date date = dateFormat.parse(ngaySinh);
-//            KhachHang khachHang = new KhachHang(id, ma, ho, tenDem, ten, date, sdt, diaChi, thanhPho, quocGia, matKhau, true);
-//            if (khachHang != null) {
-//                khachHangService.update(khachHang);
-//                request.setAttribute("list", khachHangService.findAllByObject());
-//                request.getRequestDispatcher("/views/khach-hang/index.jsp")
-//                        .forward(request, response);
-//            } else {
-//                request.setAttribute("loi", "Khong thanh cong");
-//            }
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+        StringBuilder stringBuilder = new StringBuilder();
+        if (ma.equals("")) {
+            stringBuilder.append("trỗng mã ");
+        }
+        if (ten.equals("")) {
+            stringBuilder.append("trỗng tên ");
+        }
+        if (stringBuilder.length() > 0) {
+            KhachHang khachHang = new KhachHang(id, ma, ho, tenDem, ten, null, sdt, diaChi, thanhPho, quocGia, matKhau, true);
+            request.setAttribute("khachHang", khachHang);
+            request.setAttribute("thongBao", "Không được " + stringBuilder.toString());
+            request.getRequestDispatcher("/views/khach-hang/create.jsp")
+                    .forward(request, response);
+        } else {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = dateFormat.parse(ngaySinh);
+                KhachHang khachHang = new KhachHang(id, ma, ho, tenDem, ten, date, sdt, diaChi, thanhPho, quocGia, matKhau, true);
+                if (khachHang != null) {
+                    khachHangService.update(khachHang);
+                    response.sendRedirect("/StoreManager_war_exploded/khach-hang/index");
+                } else {
+                    request.setAttribute("loi", "Khong thanh cong");
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

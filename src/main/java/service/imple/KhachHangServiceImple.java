@@ -19,11 +19,10 @@ public class KhachHangServiceImple implements KhachHangService {
 
     @Override
     public List<KhachHang> findAllByObject() {
-        List<KhachHang> list = khachHangRepository.findAllByObject();
-        return list
+        return khachHangRepository.findAllByObject()
                 .stream()
                 .filter(t -> t.isTrangThai() == true)
-                .sorted((o1, o2) -> o2.getId() - o1.getId())
+                .sorted((o1, o2) -> o2.getMa().compareToIgnoreCase(o1.getMa()))
                 .collect(Collectors.toList());
     }
 
@@ -65,5 +64,10 @@ public class KhachHangServiceImple implements KhachHangService {
     @Override
     public List<KhachHang> findByPaing(int index) {
         return khachHangRepository.findByPaing(index);
+    }
+
+    @Override
+    public KhachHang findByMa(Object o) {
+        return khachHangRepository.findByMa(o);
     }
 }

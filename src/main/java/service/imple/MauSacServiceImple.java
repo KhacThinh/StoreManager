@@ -7,6 +7,7 @@ import service.MauSacService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class MauSacServiceImple implements MauSacService {
 
@@ -18,7 +19,10 @@ public class MauSacServiceImple implements MauSacService {
 
     @Override
     public List<MauSac> findAllByObject() {
-        return mauSacRepository.findAllByObject();
+        return mauSacRepository.findAllByObject()
+                .stream()
+                .sorted((o1, o2) -> o2.getMa().compareToIgnoreCase(o1.getMa()))
+                .collect(Collectors.toList());
     }
 
     @Override

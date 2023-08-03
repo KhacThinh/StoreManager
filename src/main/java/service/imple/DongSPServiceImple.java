@@ -20,10 +20,10 @@ public class DongSPServiceImple implements DongSanPhamService {
 
     @Override
     public List<DongSP> findAllByObject() {
-        List<DongSP> list = dongSPRepository.findAllByObject();
-        return list
+        return dongSPRepository
+                .findAllByObject()
                 .stream()
-                .sorted((o1, o2) -> o2.getId() - o1.getId())
+                .sorted((o1, o2) -> o2.getMa().compareTo(o1.getMa()))
                 .collect(Collectors.toList());
     }
 

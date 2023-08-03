@@ -3,17 +3,13 @@ package model.repository.imple;
 import common.utils.HibernateUtil;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
-import model.entity.CuaHang;
 import model.entity.KhachHang;
 import model.repository.KhachHangRepository;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class KhachHangReposImple implements KhachHangRepository {
     private final Session Hsession;
@@ -71,7 +67,7 @@ public class KhachHangReposImple implements KhachHangRepository {
 
     @Override
     public KhachHang findById(Object o) {
-        String hql = "SELECT ch FROM KhachHang ch WHERE ch.id = :id";
+        String hql = "SELECT ch FROM KhachHang ch WHERE ch.id = :id ";
         TypedQuery<KhachHang> hangTypedQuery = Hsession.createQuery(hql, KhachHang.class);
         hangTypedQuery.setParameter("id", UUID.fromString(o.toString()));
         return hangTypedQuery.getSingleResult();
@@ -79,9 +75,9 @@ public class KhachHangReposImple implements KhachHangRepository {
 
     @Override
     public List<KhachHang> findByName(String name) {
-        String hql = "SELECT ch FROM KhachHang ch WHERE ch.ten LIKE '%?%'";
+        String hql = "SELECT ch FROM KhachHang ch WHERE ch.ten LIKE :name or ch.tenDem LIKE :name or ch.ho LIKE :name and ch.trangThai = true";
         TypedQuery<KhachHang> hangTypedQuery = Hsession.createQuery(hql, KhachHang.class);
-        hangTypedQuery.setParameter(1, name);
+        hangTypedQuery.setParameter("name", "%" + name + "%");
         return hangTypedQuery.getResultList();
     }
 
@@ -89,12 +85,20 @@ public class KhachHangReposImple implements KhachHangRepository {
     public List<KhachHang> findByPaing(int index) {
         int kichThuocTrang = 3;
         int start = (index - 1) * kichThuocTrang;
-        String hql = "SELECT kh FROM KhachHang kh";
-        Query query = Hsession.createQuery(hql, KhachHang.class);
-        int end = Math.min(start + 3, query.getResultList().size());
-        query.setFirstResult(start);
-        query.setMaxResults(end);
-        List<KhachHang> list = query.getResultList();
+        String hql = "SELECT kh FROM KhachHang kh WHERE kh.trangThai = true ORDER BY kh.ma DESC";
+        TypedQuery<KhachHang> query = Hsession.createQuery(hql, KhachHang.class);
+        int totalResults = query.getResultList().size();
+        int end = Math.min(start + kichThuocTrang, totalResults);
+        List<KhachHang> list = query.getResultList().subList(start, end);
         return list;
+    }
+
+    @Override
+    public KhachHang findByMa(Object o) {
+        String hql = "SELECT ch FROM KhachHang ch WHERE ch.ma = :ma";
+        TypedQuery<KhachHang> hangTypedQuery = Hsession.createQuery(hql, KhachHang.class);
+        hangTypedQuery.setParameter("ma", o.toString());
+        KhachHang khachHang = hangTypedQuery.getSingleResult();
+        return khachHang;
     }
 }

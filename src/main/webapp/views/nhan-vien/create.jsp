@@ -27,7 +27,7 @@
         <form action="/StoreManager_war_exploded/nhan-vien/insert" method="POST">
             <div class="md-3">
                 <label class="form-label">Mã</label>
-                <input type="text" name="ma" class="form-control" required/>
+                <input type="text" name="ma" class="form-control"/>
             </div>
             <div class="row mb-3">
                 <div class="col-md-4">
@@ -90,7 +90,6 @@
                             class="bi bi-plus-circle"></i></a>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Cửa Hàng</label>
                     <select class="form-select" name="idCH" required>
                         <option selected disabled>Chọn Cửa Hàng</option>
                         <c:forEach items="${listCuaHang}" var="lCH">
@@ -98,15 +97,18 @@
                         </c:forEach>
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="form-label">GuiBC</label>
-                    <select class="form-select" name="idGuiBC" required>
-                        <option selected disabled>Chọn Gửi BC</option>
+                    <select class="form-select" name="idGuiBC">
+                        <option selected disabled value="${null}">Chọn Gửi BC</option>
                         <c:forEach items="${listGuiBC}" var="lGuiBC">
-                            <option value="${lGuiBC.id}">${lGuiBC.ten}</option>
+                            <option value="${lGuiBC.ma}">${lGuiBC.ten}</option>
                         </c:forEach>
                     </select>
                 </div>
+            </div>
+            <div class="row mb-3">
+                <span style="color: red">${messageError}</span>
             </div>
             <a href="/StoreManager_war_exploded/nhan-vien/index" class="btn btn-secondary"><i
                     class="bi bi-backspace"></i> Hủy</a>

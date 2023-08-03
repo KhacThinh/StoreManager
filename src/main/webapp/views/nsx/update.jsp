@@ -35,7 +35,10 @@
                 <label class="form-label">Tên NSX</label>
                 <input type="text" name="ten" class="form-control" value="${nsx.ten}"/>
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <div class="mb-3">
+                <span style="color: red">${messageError}</span>
+            </div>
+            <button type="submit" class="btn btn-primary">Sửa</button>
         </form>
     </div>
 </div>

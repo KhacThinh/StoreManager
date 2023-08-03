@@ -19,11 +19,11 @@ public class CuaHangServiceImple implements CuaHangService {
 
     @Override
     public List<CuaHang> findAllByObject() {
-        List<CuaHang> list = cuaHangRepository.findAllByObject();
-        return list
+        return cuaHangRepository
+                .findAllByObject()
                 .stream()
                 .filter(t -> t.isTrangThai() == true)
-                .sorted((o1, o2) -> o2.getId() - o1.getId())
+                .sorted((o1, o2) -> o2.getMa().compareToIgnoreCase(o1.getMa()))
                 .collect(Collectors.toList());
     }
 

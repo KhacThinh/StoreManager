@@ -25,6 +25,10 @@ public class GioHang {
     @JoinColumn(name = "IdKH")
     private KhachHang idKH;
 
+//    @ManyToOne()
+//    @JoinColumn(name = "IdNV")
+//    private NhanVien idNhanVien;
+
     @Column(name = "Ma")
     private String ma;
 

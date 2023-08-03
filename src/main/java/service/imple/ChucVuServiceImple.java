@@ -7,6 +7,7 @@ import service.ChucVuService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ChucVuServiceImple implements ChucVuService {
 
@@ -18,7 +19,11 @@ public class ChucVuServiceImple implements ChucVuService {
 
     @Override
     public List<ChucVu> findAllByObject() {
-        return chucVuRepositoryImple.findAllByObject();
+        return chucVuRepositoryImple
+                .findAllByObject()
+                .stream()
+                .sorted((o1, o2) -> o2.getMa().compareToIgnoreCase(o1.getMa()))
+                .collect(Collectors.toList());
     }
 
     @Override

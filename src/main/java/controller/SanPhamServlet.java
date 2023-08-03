@@ -10,6 +10,7 @@ import service.SanPhamService;
 import service.imple.SanPhamServiceImple;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @WebServlet({
         "/san-pham/index",
@@ -54,16 +55,12 @@ public class SanPhamServlet extends HttpServlet {
 
     protected void edit(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        int id = Integer.parseInt(request.getParameter("id"));
-//        SanPham sanPham = sanPhamService
-//                .findAllByObject()
-//                .stream()
-//                .filter(t -> t.getId() == id)
-//                .findFirst()
-//                .orElse(null);
-//        request.setAttribute("sanPham", sanPham);
-//        request.getRequestDispatcher("/views/san-pham/update.jsp")
-//                .forward(request, response);
+        UUID id = UUID.fromString(request.getParameter("id"));
+        SanPham sanPham = sanPhamService.findById(id);
+        request.setAttribute("sanPham", sanPham);
+        request.getRequestDispatcher("/views/san-pham/update.jsp")
+                .forward(request, response);
+
     }
 
 
@@ -80,22 +77,60 @@ public class SanPhamServlet extends HttpServlet {
 
     protected void insert(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        int id = sanPhamService.findAllByObject().size();
-//        String ma = request.getParameter("ma");
-//        String ten = request.getParameter("ten");
-//        SanPham sanPham = new SanPham(++id, ma, ten);
-//        sanPhamService.save(sanPham);
-//        response.sendRedirect("/StoreManager_war_exploded/san-pham/index");
+        StringBuilder stringBuilder = new StringBuilder();
+        String ma = request.getParameter("ma");
+        String ten = request.getParameter("ten");
+        if (ma.equals("")) {
+            stringBuilder.append("trỗng mã ");
+        }
+        if (ten.equals("")) {
+            stringBuilder.append("trỗng tên ");
+        }
+        boolean checkMa = sanPhamService
+                .findAllByObject()
+                .stream()
+                .anyMatch(sanPham -> sanPham.getMa().equalsIgnoreCase(ma));
+        if (checkMa) {
+            stringBuilder.append("trùng mã ");
+        }
+        if (stringBuilder.length() > 0) {
+            SanPham sanPham = new SanPham(null, ma, ten);
+            request.setAttribute("sanPham", sanPham);
+            request.setAttribute("messageError", "Không được để " + stringBuilder.toString());
+            request.setAttribute("list", sanPhamService.findAllByObject());
+            request.getRequestDispatcher("/views/san-pham/index.jsp")
+                    .forward(request, response);
+        } else {
+            SanPham sanPham = new SanPham(null, ma, ten);
+            sanPhamService.save(sanPham);
+            response.sendRedirect("/StoreManager_war_exploded/san-pham/index");
+        }
     }
 
     protected void update(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        int id = Integer.parseInt(request.getParameter("id"));
-//        String ma = request.getParameter("ma");
-//        String ten = request.getParameter("ten");
-//        SanPham sanPham = new SanPham(id, ma, ten);
-//        sanPhamService.update(sanPham);
-//        response.sendRedirect("/StoreManager_war_exploded/san-pham/index");
+        StringBuilder stringBuilder = new StringBuilder();
+        UUID id = UUID.fromString(request.getParameter("id"));
+        String ma = request.getParameter("ma");
+        String ten = request.getParameter("ten");
+        if (ma.equals("")) {
+            stringBuilder.append("trỗng mã ");
+        }
+        if (ten.equals("")) {
+            stringBuilder.append("trỗng tên ");
+        }
+        if (stringBuilder.length() > 0) {
+            SanPham sanPham = sanPhamService.findById(id);
+            request.setAttribute("sanPham", sanPham);
+            request.setAttribute("messageError", "Không được để " + stringBuilder.toString());
+            request.getRequestDispatcher("/views/san-pham/update.jsp")
+                    .forward(request, response);
+        } else {
+            SanPham sanPham = new SanPham(id, ma, ten);
+            sanPhamService.update(sanPham);
+            response.sendRedirect("/StoreManager_war_exploded/san-pham/index");
+
+        }
     }
 
 
