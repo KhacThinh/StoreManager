@@ -48,6 +48,9 @@ public class ChiTietSP {
     @Column(name = "GiaBan")
     private int giaBan;
 
+    @OneToOne(mappedBy = "idChiTietSP")
+    private GioHangChiTiet gioHangChiTiet;
+
     public ChiTietSP() {
     }
 

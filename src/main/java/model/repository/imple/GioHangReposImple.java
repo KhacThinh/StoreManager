@@ -44,13 +44,14 @@ public class GioHangReposImple implements GioHangRepository {
 
     @Override
     public void update(GioHang gioHang) {
-//        int id = gioHang.getId();
-//        for (int i = 0; i <= list.size(); i++) {
-//            if (list.get(i).getId() == id) {
-//                list.set(i, gioHang);
-//                break;
-//            }
-//        }
+        Transaction transaction = Hsession.getTransaction();
+        transaction.begin();
+        try {
+            Hsession.merge(gioHang);
+            transaction.commit();
+        } catch (Exception ex) {
+            transaction.rollback();
+        }
     }
 
     @Override

@@ -67,7 +67,6 @@ public class KhachHangServlet extends HttpServlet {
             if (list.isEmpty()) {
                 request.setAttribute("searchName", name);
                 request.setAttribute("thongBao", "Không tìm thấy khách hàng " + name);
-                request.setAttribute("list", khachHangService.findAllByObject());
             } else {
                 request.setAttribute("list", list);
             }

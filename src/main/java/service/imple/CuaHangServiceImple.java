@@ -1,6 +1,7 @@
 package service.imple;
 
 import model.entity.CuaHang;
+import model.entity.NhanVien;
 import model.repository.CuaHangRepository;
 import model.repository.imple.CuaHangReposImple;
 import service.CuaHangService;
@@ -61,5 +62,10 @@ public class CuaHangServiceImple implements CuaHangService {
     @Override
     public List<CuaHang> findByName(String name) {
         return cuaHangRepository.findByName(name);
+    }
+
+    @Override
+    public List<CuaHang> findByPaing(int index) {
+        return cuaHangRepository.findByPaing(index);
     }
 }

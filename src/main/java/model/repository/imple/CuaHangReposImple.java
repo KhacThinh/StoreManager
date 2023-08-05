@@ -4,6 +4,7 @@ package model.repository.imple;
 import common.utils.HibernateUtil;
 import jakarta.persistence.TypedQuery;
 import model.entity.CuaHang;
+import model.entity.NhanVien;
 import model.repository.CuaHangRepository;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -79,5 +80,16 @@ public class CuaHangReposImple implements CuaHangRepository {
         TypedQuery<CuaHang> hangTypedQuery = Hsession.createQuery(hql, CuaHang.class);
         hangTypedQuery.setParameter("name", "%" + name + "%");
         return hangTypedQuery.getResultList();
+    }
+
+    @Override
+    public List<CuaHang> findByPaing(int index) {
+        int kichThuocDuLieu = 4;
+        int start = (index - 1) * kichThuocDuLieu;
+        String hql = "SELECT ch FROM CuaHang ch where ch.trangThai = true order by ch.ma desc";
+        TypedQuery<CuaHang> query = Hsession.createQuery(hql);
+        int end = Math.min(start + kichThuocDuLieu, query.getResultList().size());
+        List<CuaHang> list = query.getResultList().subList(start, end);
+        return list;
     }
 }

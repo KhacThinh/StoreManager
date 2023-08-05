@@ -49,7 +49,16 @@ public class CuaHangServlet extends HttpServlet {
             throws ServletException, IOException {
         String searchName = request.getParameter("ten");
         if (searchName == null) {
-            request.setAttribute("list", cuaHangService.findAllByObject());
+            int count = (int) cuaHangService.findAllByObject()
+                    .stream()
+                    .count();
+            int endPage = count / 4;
+            if (count % 4 != 0) {
+                endPage++;
+            }
+            request.setAttribute("endPage", endPage);
+            int index = request.getParameter("paing") == null ? 1 : Integer.parseInt(request.getParameter("paing"));
+            request.setAttribute("list", cuaHangService.findByPaing(index));
         } else {
             request.setAttribute("searchName", searchName);
             List<CuaHang> list = cuaHangService.findByName(searchName);

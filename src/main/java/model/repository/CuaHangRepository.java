@@ -1,6 +1,7 @@
 package model.repository;
 
 import model.entity.CuaHang;
+import model.entity.NhanVien;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface CuaHangRepository {
     public CuaHang findById(Object o);
 
     public List<CuaHang> findByName(String name);
+
+    public List<CuaHang> findByPaing(int index);
 }

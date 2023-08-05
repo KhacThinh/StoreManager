@@ -68,7 +68,7 @@ public class ChucVuReposImple implements ChucVuRepository {
     public List<ChucVu> findByName(String name) {
         String hql = "SELECT cv FROM ChucVu cv WHERE cv.ten LIKE :name";
         TypedQuery<ChucVu> chucVuTypedQuery = Hsession.createQuery(hql, ChucVu.class);
-        chucVuTypedQuery.setParameter(name, "%" + name + "%");
+        chucVuTypedQuery.setParameter("name", "%" + name + "%");
         List<ChucVu> list = chucVuTypedQuery.getResultList();
         return list;
     }

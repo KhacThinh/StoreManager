@@ -76,15 +76,16 @@
     </c:forEach>
     </tbody>
 </table>
-
-<nav aria-label="...">
-    <ul class="pagination pagination-lg">
-        <c:forEach var="i" begin="1" end="${endPage}">
-            <li class="page-item">
-                <a class="page-link" href="/StoreManager_war_exploded/nhan-vien/index?paing=${i}">${i}</a></li>
-        </c:forEach>
-    </ul>
-</nav>
+<div class="container">
+    <nav aria-label="...">
+        <ul class="pagination pagination-lg">
+            <c:forEach var="i" begin="1" end="${endPage}">
+                <li class="page-item">
+                    <a class="page-link" href="/StoreManager_war_exploded/nhan-vien/index?paing=${i}">${i}</a></li>
+            </c:forEach>
+        </ul>
+    </nav>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

@@ -54,6 +54,6 @@ public class ChucVuServiceImple implements ChucVuService {
 
     @Override
     public List<ChucVu> findByName(String name) {
-        return null;
+        return chucVuRepositoryImple.findByName(name);
     }
 }

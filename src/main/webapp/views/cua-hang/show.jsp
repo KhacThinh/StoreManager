@@ -53,8 +53,16 @@
         </c:forEach>
         </tbody>
     </table>
-    <a href="http://localhost:8080/QuanLiCuaHang_war_exploded/" class="btn btn-primary"><i
-            class="bi bi-house-down-fill"></i> Home</a>
+</div>
+<div class="container">
+    <nav aria-label="...">
+        <ul class="pagination pagination-lg">
+            <c:forEach var="i" begin="1" end="${endPage}">
+                <li class="page-item">
+                    <a class="page-link" href="/StoreManager_war_exploded/cua-hang/index?paing=${i}">${i}</a></li>
+            </c:forEach>
+        </ul>
+    </nav>
 </div>
 
 

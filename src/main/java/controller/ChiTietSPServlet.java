@@ -76,8 +76,6 @@ public class ChiTietSPServlet extends HttpServlet {
             List<ChiTietSP> list = chiTietSPService.findByName(searchName);
             if (list.isEmpty()) {
                 req.setAttribute("thongBao", "Không tìm thấy " + searchName);
-                req.getRequestDispatcher("/views/chi-tiet-sp/index.jsp")
-                        .forward(req, resp);
             } else {
                 req.setAttribute("list", list);
             }

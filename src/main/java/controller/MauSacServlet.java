@@ -52,8 +52,6 @@ public class MauSacServlet extends HttpServlet {
             List<MauSac> list = mauSacService.findByName(searchName);
             if (list.isEmpty()) {
                 request.setAttribute("thongBao", "Không tìm thấy " + searchName);
-                request.getRequestDispatcher("/views/mau-sac/index.jsp")
-                        .forward(request, response);
             } else {
                 request.setAttribute("list", list);
             }

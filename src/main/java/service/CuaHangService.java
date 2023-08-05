@@ -17,4 +17,6 @@ public interface CuaHangService {
     public CuaHang findById(Object o);
 
     public List<CuaHang> findByName(String name);
+
+    public List<CuaHang> findByPaing(int index);
 }
